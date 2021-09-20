@@ -1,6 +1,6 @@
 # Team-Project-8
 
-## Proposal 1 - House much it cost?
+## Proposal 1 - Predicting cost of a property?
 1. Problems and Goals
 
 2. Methodology
