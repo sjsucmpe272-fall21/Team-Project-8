@@ -9,8 +9,6 @@
 
 4. Persona
 
-5. Dataset links
-
 
 
 ## Proposal 2 - Women Safety
@@ -21,8 +19,6 @@
 3. Approach
 
 4. Persona
-
-5. Dataset links
 
 
 
@@ -59,7 +55,5 @@
     - Consumer: Consumers can help improve the accuracy of stock information
                 by uploading a picture of a specific vending machine, and we
                 will be able to gather stock info from that picture.
-
-5. Dataset links
 
 
