@@ -1,7 +1,7 @@
 ## Team-Project-8
 
 ## Proposal 1 - Predicting cost of a House
-1.	Problems and Goals: 
+1.	Problems and Goals: <br />
 People often face issues while buying or selling a property because most of them are not completely aware of the exact price. In such scenario, they approach real estate brokers for good deals, here instead of customers these brokers get high profit as a brokerage. For avoiding such middle man, we are going to build an application which can take house details like its area, number of bedrooms, location etc. from the user and estimate its cost.  
 
 2.	Abstract: 
