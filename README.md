@@ -1,13 +1,21 @@
 # Team-Project-8
 
-## Proposal 1 - Predicting cost of a property
-1. Problems and Goals
+## Proposal 1 - Predicting cost of a House
+1. Problems and Goals: People often face issues while buying or selling a property because most of them are not completely aware of the exact price. In such scenario, they approach real estate brokers for good deals, here instead of customers these brokers gets high profit as a brokerage. For avoiding such middle man we are going to build an application which can take house details like its area, number of bedrooms, location etc from the user and estimate its cost.  
 
-2. Methodology
+2. Abstract: In this project we are going to build a web application which can predict the cost of a house by taking its parameters and comparing it with existing data. Through this application, we can provide a better overview of the property prices to the customer.
 
-3. Technology
+3. Technology: Flask, Bootstrap, Java Script.
 
-4. Persona
+4. Approch: 
+        i) Initially, we feed our machine learning model with a dataset which has various types of houses and their cost.
+
+        ii) Upon this data, we train our machine learning model using the python programming and its libraries like Numpy, Pandas, SKlearn which can analyse the data and predict the cost of a house. 
+
+        iii) Using bootstrap and Java script we create a user interface through which we can take the user inputs and show the predictions. 
+     
+ 5. Persona: This project aims to provide user friendly interface for every individual who are intended to buy or sell a house.
+
 
 
 
