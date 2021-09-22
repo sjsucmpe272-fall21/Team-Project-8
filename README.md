@@ -11,8 +11,9 @@
 
 
 
-## Proposal 2 - Women Safety
-1. Introduction to the problem statement
+## Proposal 2 - Fire Hydrant tracking safety system using - Image Segementation
+1. Introduction to the problem statement:
+
 
 2. Abstract (rough draft)
 
@@ -20,6 +21,7 @@
 
 4. Persona
 
+5. Dataset Links: https://cocodataset.org/#download
 
 
 ## Proposal 3 - Save the Vending Machine
