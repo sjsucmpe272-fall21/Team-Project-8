@@ -8,12 +8,12 @@
 3. Technology: Flask, Bootstrap, Java Script.
 
 4. Approch: 
+        
+     i)   Initially, we feed our machine learning model with a dataset which has various types of houses and their cost.
 
-        i) Initially, we feed our machine learning model with a dataset which has various types of houses and their cost.
+     ii)  Upon this data, we train our machine learning model using the python programming and its libraries like Numpy, Pandas, SKlearn which can analyse the data and predict the cost of a house. 
 
-        ii) Upon this data, we train our machine learning model using the python programming and its libraries like Numpy, Pandas, SKlearn which can analyse the data and predict the cost of a house. 
-
-        iii) Using bootstrap and Java script we create a user interface through which we can take the user inputs and show the predictions. 
+     iii) Using bootstrap and Java script we create a user interface through which we can take the user inputs and show the predictions. 
      
  5. Persona: This project aims to provide user friendly interface for every individual who are intended to buy or sell a house.
 
