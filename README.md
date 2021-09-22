@@ -37,11 +37,7 @@ Functionality: Unauthorized access to the application and few pages is been proh
 •	Customer: Customer can register and login, search for a class, join and can view joined classes.
 
         
-
-
-
-
-
+        
 ## Proposal 3 - Save the Vending Machine 
 1.	Problems and Goals:
 There are more than 7 million vending machines serving people in the U.S. every day, and these add up to a market more than 8 billion dollars. However, seeing the desired item being out-of-stock is one of the most disappointing moment. In fact, vending machines being out-of-stock are estimated to be at least 3% in lost sales. Therefore, having an interactive web app that helps tracking the stock information becomes crucial to improve the business.
