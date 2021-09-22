@@ -5,9 +5,7 @@
 
 2. Abstract: In this project we are going to build a web application which can predict the cost of a house by taking its parameters and comparing it with existing data. Through this application, we can provide a better overview of the property prices to the customer.
 
-3. Technology: Flask, Bootstrap, Java Script.
-
-4. Approch: 
+3. Approch: 
         
      i)   Initially, we feed our machine learning model with a dataset which has various types of houses and their cost.
 
@@ -15,7 +13,7 @@
 
      iii) Using bootstrap and Java script we create a user interface through which we can take the user inputs and show the predictions. 
      
- 5. Persona: This project aims to provide user friendly interface for every individual who are intended to buy or sell a house.
+ 4. Persona: This project aims to provide user friendly interface for every individual who are intended to buy or sell a house.
 
 
 
