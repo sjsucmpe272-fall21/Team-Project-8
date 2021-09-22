@@ -8,6 +8,7 @@
 3. Technology: Flask, Bootstrap, Java Script.
 
 4. Approch: 
+
         i) Initially, we feed our machine learning model with a dataset which has various types of houses and their cost.
 
         ii) Upon this data, we train our machine learning model using the python programming and its libraries like Numpy, Pandas, SKlearn which can analyse the data and predict the cost of a house. 
