@@ -22,7 +22,7 @@ This project aims to provide user friendly interface for every individual who ar
 
 ## Proposal 2 - Fitness lounge
 1.	Problems and Goals: 
-Fitness lounge is an application for facilitating fitness class registrations held in multiple gyms or fitness centers across the city. This would help people who desire to attend a fitness session in a new place.
+Every year, people pay huge prices to the fitness centers keep their fitness membership active. Fitness lounge is a one stop solution for people who would like to explore new fitness centers and attend a session in a new gym in the city. This would help people to move out of their daily routine, while the businesses would also expect new crowd to their fitness centers. 
 
 2.	Abstract: 
 Fitness lounge will have three user roles Admin, Host, and Customer. Each role will have to register himself before logging in. Admin will be able to add new gyms in the site after logging in. Trainer (Host) after logging in, can be able to add and update classes that are going to be held in their gym. Customer after logging in, will be able to see all the classes posted by various hosts with details. Customer can join any class and if prompted to join the same class again, application will not allow. Customer can view all the classes he has joined and can also search for a particular class based on gym name or class name. Filters have been implemented to filter out script and sql injection characters.
