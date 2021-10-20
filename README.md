@@ -1,4 +1,4 @@
-##Team-Project-8
+# Team-Project-8
 
 ## Proposal 1 - Predicting cost of a House
 **1.	Problems and Goals:** <br />
