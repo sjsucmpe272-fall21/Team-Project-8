@@ -1,4 +1,4 @@
-## Team-Project-8
+##Save the Vending Machine
 
 ## Proposal 1 - Predicting cost of a House
 **1.	Problems and Goals:** <br />
