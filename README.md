@@ -1,44 +1,6 @@
-## Team-Project-8
+# Team-Project-8
 
-## Proposal 1 - Predicting cost of a House
-**1.	Problems and Goals:** <br />
-People often face issues while buying or selling a property because most of them are not completely aware of the exact price. In such scenario, they approach real estate brokers for good deals, here instead of customers these brokers get high profit as a brokerage. For avoiding such middle man, we are going to build an application which can take house details like its area, number of bedrooms, location etc. from the user and estimate its cost.  
-
-**2.	Abstract:** <br />
-In this project we are going to build a web application which can predict the cost of a house by taking its parameters and comparing it with existing data. Through this application, we can provide a better overview of the property prices to the customer.
-
-**3.	Approach:** <br />
-•	Initially, we feed our machine learning model with a dataset which has various types of houses and their cost.<br />
-•	Upon this data, we train our machine learning model using the python programming and its libraries like Numpy, Pandas, SKlearn which can analyze the data and predict the cost of a house.<br />
-•	Using bootstrap and Java script we create a user interface through which we can take the user inputs and show the predictions. 
-    
-**4.	Persona:** <br />
-This project aims to provide user friendly interface for every individual who are intended to buy or sell a house.
-
-
-
-
-
-
-## Proposal 2 - Fitness lounge
-**1.	Problems and Goals:** <br />
-Every year, people pay huge prices to the fitness centers keep their fitness membership active. Fitness lounge is a one stop solution for people who would like to explore new fitness centers and attend a session in a new gym in the city. This would help people to move out of their daily routine, while the businesses would also expect new crowd to their fitness centers. 
-
-**2.	Abstract:** <br />
-Fitness lounge will have three user roles Admin, Host, and Customer. Each role will have to register himself before logging in. Admin will be able to add new gyms in the site after logging in. Trainer (Host) after logging in, can be able to add and update classes that are going to be held in their gym. Customer after logging in, will be able to see all the classes posted by various hosts with details. Customer can join any class and if prompted to join the same class again, application will not allow. Customer can view all the classes he has joined and can also search for a particular class based on gym name or class name. Filters have been implemented to filter out script and sql injection characters.
-
-**3.	Approach:** <br />
-Technologies: Spring MVC framework, Hibernate, Validator, Filters.<br />
-Functionality: Unauthorized access to the application and few pages is been prohibited, Validator and Filters would be implemented.
-    
-**4.	Persona:**  Admin, Customer and Host.<br />
-- Admin: Admin can register and log in. Add gyms to the site.<br />
-- Trainer (Host):  Host can register and login. Can add and update classes of their respective gym only.<br />
-- Customer: Customer can register and login, search for a class, join and can view joined classes.
-
-        
-        
-## Proposal 3 - Save the Vending Machine 
+##Save the Vending Machine 
 **1.	Problems and Goals:**<br />
 There are more than 7 million vending machines serving people in the U.S. every day, and these add up to a market more than 8 billion dollars. However, seeing the desired item being out-of-stock is one of the most disappointing moment. In fact, vending machines being out-of-stock are estimated to be at least 3% in lost sales. Therefore, having an interactive web app that helps tracking the stock information becomes crucial to improve the business.
 
@@ -67,3 +29,61 @@ We'll also build an internal service for vending machines to talk to each other,
   - Be able to display nearby stock info directly on the machines if a requested product runs out but is available at other machines. 
   - Record climate infomation (temperature, precipitation) via on machine sensor and data from NOAA to observe relations and advice on stocking. 
   - Display customized ads when user make purchases
+
+
+# Installations
+## Prerequisites
+- [nvm](https://nodejs.org/en/download/)
+  - Make sure you update your environment variables
+- node.js
+  ```
+  nvm install node // This should install v16
+  ```
+  - You can verify with `nvm ls` and make sure it's pointing to `v16.x.x`
+
+## Other requirements
+Once nvm and node has been installed and you have checked out the latest version of this repo, you can simply run 
+```
+npm install
+```
+to install all other requirements. 
+
+# Development
+## Setup
+The following command will compile both client and server side code and spin up a server that serve the frontend code at `localhost:3000`
+```
+npm run dev
+```
+You should see some compiling messages in our console similar to below if everything compiles successfully:
+```
+Compiling client ...
+Compiling server ...
+client:
+  3 assets
+  55 modules
+  client (webpack 5.61.0) compiled successfully in 6168 ms
+
+server:
+  3 assets
+  29 modules
+  server (webpack 5.61.0) compiled successfully in 5892 ms
+Starting Node.js ...
+Debugger listening on ws://127.0.0.1:9229/52509200-d710-486f-b6d5-b679ace76830
+For help, see: https://nodejs.org/en/docs/inspector
+Server running on http://localhost:3000
+```
+
+## Work Distribution
+- Wen-hao
+  - You can start from `client/components/Supplier` in the code. I've included a brief skeleton for components and styles
+  - The corresponding landing page would be `localhost:3000/supplier`
+- Saikrishna
+  - You can start from `client/components/VendingMachine` in the code. I've included a brief skeleton for components and styles
+  - The corresponding landing page would be `localhost:3000/vending`
+- Teja
+  - You can start from `server/vendingMachine`. There's a router that you can add more endpoints/methods to handle different requests
+  - You can send **GET** request directly from browser to `localhost/api/vm` or subsequent entpoints, or use `curl -X POST -d some_data` from command line
+
+## Knowledge Sharing
+There's also a `shared` folder that is meant for the API between front/backend. It'll be
+up to the pair to decide how they want to setup the communication
