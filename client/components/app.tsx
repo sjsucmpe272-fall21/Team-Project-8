@@ -15,7 +15,7 @@ export const App: React.FC = () => (
           <Link to='/vending'>Vending Machine</Link>
         </li>
         <li>
-          <Link to='/supplier'>Supplier</Link>
+          <Link to='/supplier'>Supplier Portal</Link>
         </li>
       </ul>
       <Route exact path='/'>
