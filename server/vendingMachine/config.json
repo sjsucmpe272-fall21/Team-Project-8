@@ -1,0 +1,11 @@
+{
+    "DB":{
+        "host":"localhost",
+        "username":"root",
+        "password":"@Rmsteja1.",
+        "port":3306,
+        "database":"vendiman_db"
+    }
+
+    
+}
