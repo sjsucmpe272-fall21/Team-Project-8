@@ -17,13 +17,22 @@ export const Supplier: React.FC = () => {
 
     if(details.email == adminUser.email && details.password == adminUser.password){
       console.log("Logged In");
+      setUser({
+        name: details.name,
+        email: details.email
+      });
     } else {
       console.log("Details do not match");
+      setError("Details do not match!");
     }
   }
   
   const Logout = () => {
     console.log("Logout");
+    setUser({
+      name: "",
+      email: ""
+    });
   }
   
   return (
@@ -33,10 +42,10 @@ export const Supplier: React.FC = () => {
           {(user.email != "") ? (
           <div className="welcome">
             <h2>Welcome, <span>{user.name}</span></h2>
-            <button>Logout</button>
+            <button onClick={Logout}>Logout</button>
           </div>
         ) : (
-            <div><SupplierLoginForm login={Login}/>
+            <div><SupplierLoginForm login={Login} />
             </div>
           )}
       </div>
