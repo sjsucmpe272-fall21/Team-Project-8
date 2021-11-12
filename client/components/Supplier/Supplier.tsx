@@ -45,7 +45,7 @@ export const Supplier: React.FC = () => {
             <button onClick={Logout}>Logout</button>
           </div>
         ) : (
-            <div><SupplierLoginForm login={Login} />
+            <div><SupplierLoginForm login={Login} error={error} />
             </div>
           )}
       </div>
