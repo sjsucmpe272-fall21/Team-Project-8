@@ -1,11 +1,20 @@
 import express from 'express';
 import passport from 'passport'
 import { Strategy as LocalStrategy }  from 'passport-local';
-import { userModel } from './models/UserModel';
+import { User, userModel } from './models/UserModel';
 
 export const WebAppRouter = express.Router();
 
 const WEB_APP_HOME_PAGE = '/wa'
+
+passport.serializeUser((user: any, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id: string, done) => {
+  const user = await userModel.getUser(id);
+  done(null, user);
+});
 
 passport.use(new LocalStrategy({
   usernameField: 'email',
@@ -62,6 +71,10 @@ WebAppRouter.route('/signup')
     }
   })
 
+
+
+
+// Wildcard route that guard against any other weird routes
 WebAppRouter.route('*')
   .get((_, res) => {
     res.redirect(WEB_APP_HOME_PAGE);

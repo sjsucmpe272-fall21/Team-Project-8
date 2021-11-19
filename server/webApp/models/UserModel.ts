@@ -1,9 +1,11 @@
 import mysql from 'promise-mysql';
 import uuid from 'uuid';
+const dbConfig = require('../config/database.json');
 
 export interface User {
   id: string;
   email: string;
+  name: string;
 }
 
 
@@ -25,14 +27,14 @@ class UserModel {
 
   async getUser(id: string): Promise<User | undefined> {
     const conn = await this.connection;
-    const user = await conn.query(`SELECT id, email FROM users WHERE id='${id}'`);
+    const user = await conn.query(`SELECT id, email, name FROM users WHERE id='${id}'`);
     if (user.length === 0) {
       return undefined;
     }
     return user[0];
   }
 
-  async authenticateUser(email: string, password: string): Promise<User | undefined> {
+  async authenticateUser(email: string, password: string):  Promise<User | undefined> {
     const conn = await this.connection;
     const user = await conn.query(`
       SELECT id, email 
@@ -47,12 +49,7 @@ class UserModel {
 }
 
 async function ensureUserDatabase() {
-  const connection = await mysql.createConnection({
-    host: '127.0.0.1',
-    port: 3306,
-    user: 'testuser',
-    password: 'password'
-  });
+  const connection = await mysql.createConnection(dbConfig);
 
   await connection.query('CREATE DATABASE IF NOT EXISTS user');
   await connection.changeUser({'database': 'user'});
@@ -62,6 +59,7 @@ async function ensureUserDatabase() {
       id varchar(255) primary key, 
       email varchar(255) not null,  
       password varchar(255) not null,
+      name varchar(255) not null,
       UNIQUE (email)
     )`
   );
