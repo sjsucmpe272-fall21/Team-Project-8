@@ -4,6 +4,7 @@ import { Route, Link } from 'react-router-dom'
 import { Supplier } from './Supplier/Supplier'
 import { VendingMachine  } from './VendingMachine/VendingMachine'
 import {Dashboard} from './SupplierDashboard/Dashboard'
+import {SupplierSignUpForm} from './SupplierSignUpForm/SupplierSignUpForm'
 
 export const App: React.FC = () => (
     <div>
@@ -31,6 +32,9 @@ export const App: React.FC = () => (
       </Route>
       <Route path='/vending'>
         <VendingMachine/>
+      </Route>
+      <Route path='/supplier/signup'>
+        <SupplierSignUpForm SignUp={()=>{}} error ={() => {}}/>
       </Route>
       <Route path='/supplier'>
         <Supplier/>

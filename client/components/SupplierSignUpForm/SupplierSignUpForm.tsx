@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
-import './supplierloginform.scss';
+import '../SupplierLoginForm/SupplierLoginForm.scss';
 
-export const SupplierLoginForm: React.FC <{login: (detail: any) => void,error: any}> = ({login,error}) => {
+export const SupplierSignUpForm: React.FC <{SignUp: (detail: any) => void, error: any}> = ({SignUp,error}) => {
 
-  const [details, setDetails] = useState ({ name: "", email: "", password: "" });
+  const [details, setDetails] = useState ({ name: "", email: "", password: "",confirm_password: "" });
 
     const submitHandler = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        login(details);
+        SignUp(details);
         
     }
     
@@ -18,7 +18,7 @@ export const SupplierLoginForm: React.FC <{login: (detail: any) => void,error: a
       <div className="formStyle">
         <form onSubmit={submitHandler}>
               <div className="form-inner">
-                  <h2>Login</h2>
+                  <h2>SignUp</h2>
                   {(error != "") ? ( <div className="error">{error}</div>) : ""}
                   <div className="form-group inputStyle">
                       <label htmlFor="name">Name: </label>
@@ -32,8 +32,11 @@ export const SupplierLoginForm: React.FC <{login: (detail: any) => void,error: a
                       <label htmlFor="password">Password: </label>
                       <input type="password" name="password" id="password" onChange={e => setDetails({...details, password: e.target.value})} value={details.password}  />
                   </div>
-                  <input type="submit" value="Login" />
-                  <a  href="/supplier/signup" >Sign Up</a>
+                  <div className="form-group inputStyle">
+                      <label htmlFor="password">Confirm Password: </label>
+                      <input type="password" name="confirm_password" id="confirm_password" onChange={e => setDetails({...details, confirm_password: e.target.value})} value={details.confirm_password}  />
+                  </div>
+                  <input type="submit" value="Sign Up" />
               </div>
         </form>
       </div>
