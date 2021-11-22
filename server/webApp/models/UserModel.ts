@@ -1,6 +1,11 @@
 import mysql from 'promise-mysql';
 import uuid from 'uuid';
+import * as bcrypt from 'bcrypt';
+import * as _ from 'lodash';
+
 const dbConfig = require('../config/database.json');
+
+const SALT_ROUNDS = 10;
 
 export interface User {
   id: string;
@@ -16,11 +21,16 @@ class UserModel {
     this.connection = ensureUserDatabase();
   }
   
-  async addUser(email: string, password: string): Promise<User | undefined> {
+  async addUser(email: string, password: string, name: string): Promise<User | undefined> {
     const conn = await this.connection;
     const newUserId = uuid.v4();
+
+    const salt = await bcrypt.genSalt(SALT_ROUNDS);
+    const hashed_password = await bcrypt.hash(password, salt);
+
     await conn.query(
-      `INSERT INTO users (id, email, password) VALUES ('${newUserId}','${email}', '${password}')`
+      `INSERT INTO users (id, email, password, salt, name) 
+       VALUES ('${newUserId}','${email}', '${hashed_password}', '${salt}', '${name}')`
     );
     return this.getUser(newUserId);
   }
@@ -37,14 +47,22 @@ class UserModel {
   async authenticateUser(email: string, password: string):  Promise<User | undefined> {
     const conn = await this.connection;
     const user = await conn.query(`
-      SELECT id, email 
+      SELECT id, email, password, salt, name
       FROM users 
-      WHERE email='${email}' AND password='${password}'`
+      WHERE email='${email}'`
     );
     if (user.length === 0) {
       return undefined;
     }
-    return user[0];
+    const result = await bcrypt.compare(password, user[0].password);
+    if (result) { 
+      return {
+        id: user[0].id,
+        email,
+        name: user[0].name
+      };
+    } 
+    return undefined;
   }
 }
 
@@ -58,12 +76,13 @@ async function ensureUserDatabase() {
     `CREATE TABLE IF NOT EXISTS users(
       id varchar(255) primary key, 
       email varchar(255) not null,  
+      salt varchar(255) not null,
       password varchar(255) not null,
       name varchar(255) not null,
       UNIQUE (email)
     )`
   );
-
+ 
   return connection; 
 }
 

@@ -48,7 +48,7 @@ WebAppRouter.route('/login')
     next()
   },passport.authenticate('local'), (req, res) => {
     console.log(req.method);
-    res.send('Welcome to WebApp authenticated: ' + req.originalUrl);
+    res.redirect('/supplier/dashboard');
   })
 
 WebAppRouter.route('/logout') 
@@ -59,13 +59,13 @@ WebAppRouter.route('/logout')
 
 WebAppRouter.route('/signup')
   .post(async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      res.status(400).send("No email or password");
+    const { email, password, name } = req.body;
+    if (!email || !password || !name) {
+      res.status(400).send("No email, password or name");
     }
     try {
-      const user = await userModel.addUser(email, password);
-      res.redirect('/api/wa');
+      const user = await userModel.addUser(email, password, name);
+      res.redirect('/supplier/dashboard');
     } catch(err: any) {
       res.status(409).send(err.message);
     }
