@@ -6,25 +6,16 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   name: 'client',
-  entry: {
-    client: path.resolve(__dirname, 'client/client.tsx'),
-    
-  },
-  mode: 'production',
-  output: {
-    path: path.resolve(__dirname + '/dist/static'),
-    filename: '[name].[contenthash].js',
-    publicPath: '',
-  },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.scss'],
-  },
-  target: 'web',
+  entry: './client/client.tsx',
+  devtool: 'inline-source-map',
+  // mode: 'production',
+  externalsPresets: { node: true }, // in order to ignore built-in modules like path, fs, etc.
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
+        exclude: /node_modules/,
         options: {
           configFile: 'tsconfig.client.json',
         },
@@ -39,9 +30,17 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.scss'],
+  },
+  output: {
+    path: path.resolve(__dirname + '/dist/static'),
+    filename: '[name].[contenthash].js',
+    publicPath: '',
+  },
   plugins: [
-    new CleanWebpackPlugin(), 
-    new WebpackManifestPlugin(), 
+    new CleanWebpackPlugin(),
+    new WebpackManifestPlugin(),
     new MiniCssExtractPlugin()
   ],
 }

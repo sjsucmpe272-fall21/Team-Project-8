@@ -1,11 +1,10 @@
 import mysql from 'promise-mysql';
 import uuid from 'uuid';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import * as _ from 'lodash';
 
+import { DEFAULT_SALT_ROUNDS } from '../../../shared/SupplierTypes';
 const dbConfig = require('../config/database.json');
-
-const SALT_ROUNDS = 10;
 
 export interface User {
   id: string;
@@ -25,12 +24,10 @@ class UserModel {
     const conn = await this.connection;
     const newUserId = uuid.v4();
 
-    const salt = await bcrypt.genSalt(SALT_ROUNDS);
-    const hashed_password = await bcrypt.hash(password, salt);
-
+    console.log("Prehashed password: ", password)
     await conn.query(
       `INSERT INTO users (id, email, password, salt, name) 
-       VALUES ('${newUserId}','${email}', '${hashed_password}', '${salt}', '${name}')`
+       VALUES ('${newUserId}','${email}', '${password}', '${password}', '${name}')`
     );
     return this.getUser(newUserId);
   }
@@ -40,7 +37,7 @@ class UserModel {
     const user = await conn.query(`SELECT id, email, name FROM users WHERE id='${id}'`);
     if (user.length === 0) {
       return undefined;
-    }
+    } 
     return user[0];
   }
 
@@ -50,16 +47,18 @@ class UserModel {
       SELECT id, email, password, salt, name
       FROM users 
       WHERE email='${email}'`
-    );
+    ); 
+    console.log(email, password);
     if (user.length === 0) {
       return undefined;
     }
     const result = await bcrypt.compare(password, user[0].password);
+    console.log("Result: ", result);
     if (result) { 
-      return {
+      return { 
         id: user[0].id,
         email,
-        name: user[0].name
+        name: user[0].name 
       };
     } 
     return undefined;

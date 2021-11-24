@@ -1,12 +1,14 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Redirect } from 'react-router-dom'
 
 import { Supplier } from './Supplier/Supplier'
 import { VendingMachine  } from './VendingMachine/VendingMachine'
 import {Dashboard} from './SupplierDashboard/Dashboard'
-import {SupplierSignUpForm} from './SupplierSignUpForm/SupplierSignUpForm'
+import { AuthConsumer, AuthProvider } from './Supplier/AuthContext'
 
-export const App: React.FC = () => (
+export const App: React.FC = () => {
+  const { authed } = AuthConsumer();
+  return (
     <div>
       Some helpful links here. Should be removed/modified later
       <ul>
@@ -19,28 +21,43 @@ export const App: React.FC = () => (
         <li>
           <Link to='/supplier'>Supplier Login Page</Link>
         </li>
-        <li>
-          <Link to='/dashboard'>Supplier Dashboard</Link>
-        </li>
+        { authed && (
+          <>
+            <li>
+              <Link to='/supplier/logout'>Supplier Logout</Link>
+            </li>
+            <li>
+              <Link to='/supplier/dashboard'>Supplier Dashboard</Link>
+            </li>
+          </>
+        )}
       </ul>
-      <Route exact path='/'>
-        <div>
-          <h1>
-            Home page for Vendiman
-          </h1>
-        </div>
-      </Route>
-      <Route path='/vending'>
-        <VendingMachine/>
-      </Route>
-      <Route path='/supplier/signup'>
-        <SupplierSignUpForm SignUp={()=>{}} error ={() => {}}/>
-      </Route>
-      <Route path='/supplier'>
-        <Supplier/>
-      </Route>
-      <Route path='/dashboard'>
-        <Dashboard/>
-      </Route>
+      <AuthProvider>
+        <Route exact path='/'>
+          <div>
+            <h1>
+              Home page for Vendiman
+            </h1>
+          </div>
+        </Route>
+        <Route path='/vending'>
+          <VendingMachine/>
+        </Route>
+        <Route exact={true} path='/supplier'>
+          <Supplier/>
+        </Route>
+        <Route exact={true} path='/supplier/dashboard'>
+          <RequireAuth>
+            <Dashboard/>
+          </RequireAuth>
+        </Route>
+      </AuthProvider>
     </div>
-)
+);}
+
+const RequireAuth: React.FC<{}> = ({children}) => {
+  const { authed } = AuthConsumer();
+  return authed === true 
+    ? (<>{children}</>)
+    : <Redirect to='/supplier'/>
+}

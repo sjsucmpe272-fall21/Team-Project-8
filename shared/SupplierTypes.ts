@@ -6,3 +6,5 @@ export namespace SupplierTypes {
   }
   export interface Something {}
 }
+
+export const DEFAULT_SALT_ROUNDS = 10;
