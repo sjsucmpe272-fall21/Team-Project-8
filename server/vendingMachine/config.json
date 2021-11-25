@@ -2,9 +2,9 @@
     "DB":{
         "host":"localhost",
         "username":"root",
-        "password":"@Rmsteja1.",
+        "password":"password",
         "port":3306,
-        "database":"vendiman_db"
+        "database":"vendiman"
     }
 
     
