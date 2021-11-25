@@ -3,8 +3,8 @@ import { Route, Link, Redirect } from 'react-router-dom'
 
 import { Supplier } from './Supplier/Supplier'
 import { VendingMachine  } from './VendingMachine/VendingMachine'
-import {Dashboard} from './SupplierDashboard/Dashboard'
 import { AuthConsumer, AuthProvider } from './Supplier/AuthContext'
+import { NavBar } from './Supplier/NavBar'
 
 export const App: React.FC = () => {
   const { authed } = AuthConsumer();
@@ -27,7 +27,7 @@ export const App: React.FC = () => {
               <Link to='/supplier/logout'>Supplier Logout</Link>
             </li>
             <li>
-              <Link to='/supplier/dashboard'>Supplier Dashboard</Link>
+              <Link to='/dashboard'>Supplier Dashboard</Link>
             </li>
           </>
         )}
@@ -46,10 +46,10 @@ export const App: React.FC = () => {
         <Route exact={true} path='/supplier'>
           <Supplier/>
         </Route>
-        <Route exact={true} path='/supplier/dashboard'>
-          <RequireAuth>
-            <Dashboard/>
-          </RequireAuth>
+        <Route exact={true} path='/dashboard'>
+          {/* <RequireAuth> */}
+            <NavBar/>
+          {/* </RequireAuth> */}
         </Route>
       </AuthProvider>
     </div>

@@ -1,3 +1,16 @@
+// Some global styles here
+html, body {
+  min-height: 100vh;
+  padding: 0;
+}
+
+#root {
+  height: 100vh;
+
+  > div {
+    height:100%;
+  }
+}
 
 
 .supplier-title {

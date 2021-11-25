@@ -13,7 +13,7 @@ const server = express()
 
 server.use('/api/vm', VendingMachineRouter);
 server.use('/api/wa', WebAppRouter);
-
+ 
 // Serving static resources, mainly rendered React components
 server.use('/', express.static(path.join(__dirname, 'static')))
 
