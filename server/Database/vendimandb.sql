@@ -15,6 +15,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+CREATE DATABASE IF NOT EXISTS vendiman;
+use vendiman;
+
 --
 -- Table structure for table `climate_update`
 --
@@ -99,11 +102,12 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `owner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `owner` (
-  `O_ID` varchar(255) DEFAULT NULL,
-  `OWNER_NAME` varchar(50) DEFAULT NULL,
-  `EMAIL` varchar(30) DEFAULT NULL,
-  `password` varchar(30) DEFAULT NULL
+CREATE TABLE IF NOT EXISTS owner(
+  id varchar(255) primary key, 
+  email varchar(255) not null,  
+  password varchar(255) not null,
+  name varchar(255) not null,
+  UNIQUE (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -113,6 +117,7 @@ CREATE TABLE `owner` (
 
 LOCK TABLES `owner` WRITE;
 /*!40000 ALTER TABLE `owner` DISABLE KEYS */;
+INSERT INTO `owner` VALUES ('f43b629e-234e-4e9b-9532-58d8ac732854', 1234, '$2a$10$OnKLvihviDoXzbLZen3BDO8yQwRg5LEXyH6dEDbWEBHypu1mxSYpC', "Test User");
 /*!40000 ALTER TABLE `owner` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,9 +161,11 @@ DROP TABLE IF EXISTS `vending_machines`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vending_machines` (
   `MACHINE_ID` varchar(255) NOT NULL,
-  `FLOOR` int DEFAULT NULL,
-  `MACHINE_NUMBER` int DEFAULT NULL,
-  PRIMARY KEY (`MACHINE_ID`)
+  `FLOOR` int NOT NULL,
+  `MACHINE_NUMBER` int NOT NULL,
+  `OWNER_ID` varchar(255) NOT NULL,
+  PRIMARY KEY (`MACHINE_ID`),
+  CONSTRAINT `machines_ibfk_1` FOREIGN KEY (`OWNER_ID`) REFERENCES `owner` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -168,7 +175,7 @@ CREATE TABLE `vending_machines` (
 
 LOCK TABLES `vending_machines` WRITE;
 /*!40000 ALTER TABLE `vending_machines` DISABLE KEYS */;
-INSERT INTO `vending_machines` VALUES ('4c502e60-4b51-11ec-902a-b05adad3c217',1,1),('4c51a993-4b51-11ec-902a-b05adad3c217',1,2),('4c531d92-4b51-11ec-902a-b05adad3c217',2,1),('4c54a982-4b51-11ec-902a-b05adad3c217',2,2),('4c55aa1d-4b51-11ec-902a-b05adad3c217',3,1),('4c574e73-4b51-11ec-902a-b05adad3c217',3,2),('4c586d6e-4b51-11ec-902a-b05adad3c217',4,1),('4c59c144-4b51-11ec-902a-b05adad3c217',4,2),('4c5ac9d1-4b51-11ec-902a-b05adad3c217',5,1),('4c5c2ab1-4b51-11ec-902a-b05adad3c217',5,2);
+INSERT INTO `vending_machines` VALUES ('4c502e60-4b51-11ec-902a-b05adad3c217',1,1, 'f43b629e-234e-4e9b-9532-58d8ac732854'),('4c51a993-4b51-11ec-902a-b05adad3c217',1,2, 'f43b629e-234e-4e9b-9532-58d8ac732854'),('4c531d92-4b51-11ec-902a-b05adad3c217',2,1, 'f43b629e-234e-4e9b-9532-58d8ac732854'),('4c54a982-4b51-11ec-902a-b05adad3c217',2,2, 'f43b629e-234e-4e9b-9532-58d8ac732854'),('4c55aa1d-4b51-11ec-902a-b05adad3c217',3,1, 'f43b629e-234e-4e9b-9532-58d8ac732854'),('4c574e73-4b51-11ec-902a-b05adad3c217',3,2, 'f43b629e-234e-4e9b-9532-58d8ac732854'),('4c586d6e-4b51-11ec-902a-b05adad3c217',4,1, 'f43b629e-234e-4e9b-9532-58d8ac732854'),('4c59c144-4b51-11ec-902a-b05adad3c217',4,2, 'f43b629e-234e-4e9b-9532-58d8ac732854'),('4c5ac9d1-4b51-11ec-902a-b05adad3c217',5,1, 'f43b629e-234e-4e9b-9532-58d8ac732854'),('4c5c2ab1-4b51-11ec-902a-b05adad3c217',5,2, 'f43b629e-234e-4e9b-9532-58d8ac732854');
 /*!40000 ALTER TABLE `vending_machines` ENABLE KEYS */;
 UNLOCK TABLES;
 

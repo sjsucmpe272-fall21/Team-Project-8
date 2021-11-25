@@ -64,6 +64,7 @@ WebAppRouter.route('/signup')
       await userModel.addUser(email, password, name);
       res.status(201).send("Successfully signed up");
     } catch(err: any) {
+      console.log(err.message);
       res.status(409).send(err.message);
     }
   })
