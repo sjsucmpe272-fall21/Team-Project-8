@@ -1,7 +1,9 @@
 import express from 'express';
 import passport from 'passport'
 import { Strategy as LocalStrategy }  from 'passport-local';
-import { User, userModel } from './models/UserModel';
+import { SupplierTypes } from '../../shared/SupplierTypes';
+import { machineModel } from './models/MachineModels';
+import { userModel } from './models/UserModel';
 
 export const WebAppRouter = express.Router();
 
@@ -33,8 +35,6 @@ passport.use(new LocalStrategy({
   }
 }));
 
-WebAppRouter.use(passport.initialize());
-WebAppRouter.use(express.json());
 
 WebAppRouter.route('/')
 .get((req, res) => {
@@ -43,7 +43,9 @@ WebAppRouter.route('/')
 })
  
 WebAppRouter.route('/login')
-  .post(passport.authenticate('local'), (req, res) => {
+  .post(passport.authenticate('local', {
+    failureRedirect: '/login'
+  }), (req, res) => {
     console.log("After authentication", req.method);
     res.status(200).send("Successfully log in");
   })
@@ -68,6 +70,24 @@ WebAppRouter.route('/signup')
       res.status(409).send(err.message);
     }
   })
+
+const protectedRouteMiddleware: express.Handler = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.redirect(WEB_APP_HOME_PAGE);
+  }
+}
+
+type AuthenticatedRequest = express.Request & { user: SupplierTypes.User };
+
+WebAppRouter.route('/machines')
+  .get(protectedRouteMiddleware, async (req: any, res) => {
+    const machines = await machineModel.getMachinesForUser(req.user.id);
+    res.send(machines)
+  })
+
+
 
 
 

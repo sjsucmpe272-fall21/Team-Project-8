@@ -4,17 +4,11 @@ import * as bcrypt from 'bcryptjs';
 import * as _ from 'lodash';
 
 import { connection } from '../../Database/Connection';
+import { SupplierTypes } from '../../../shared/SupplierTypes';
 
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-}
-
-
+type User = SupplierTypes.User;
 
 class UserModel {
-
   async addUser(email: string, password: string, name: string): Promise<User | undefined> {
     const conn = await connection;
     const newUserId = uuid.v4();
