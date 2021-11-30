@@ -1,6 +1,9 @@
 # online-vending-machine
 Simple online vending machine UI created with React. Includes reasoning behind technology choices.
 
+## link
+https://deividask.github.io/online-vending-machine/#/
+
 ## Technologies
 
 **React**. Simple and robust framework for V in the MVC.
