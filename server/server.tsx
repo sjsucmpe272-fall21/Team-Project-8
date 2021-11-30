@@ -1,9 +1,12 @@
 import express from 'express'
+import session from 'express-session';
 import fs from 'fs'
 import path from 'path'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
+import * as bodyParser from 'body-parser';
+
 import { App } from '../client/components/app'
 import { VendingMachineRouter } from './vendingMachine/VendingMachineRouter';
 import { WebAppRouter } from './webApp/WebAppRouter'
@@ -11,9 +14,16 @@ import { WebAppRouter } from './webApp/WebAppRouter'
 
 const server = express()
 
-server.use('/api/vm', VendingMachineRouter);
-server.use('/api/wa', WebAppRouter);
+server.use(session({
+  secret              : 'cmpe272_react_nodejs_mysql',
+  resave              : false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
+  saveUninitialized   : false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
+}));
+server.use(bodyParser.json());
 
+server.use('/api/vm', VendingMachineRouter); 
+server.use('/api/wa', WebAppRouter);
+ 
 // Serving static resources, mainly rendered React components
 server.use('/', express.static(path.join(__dirname, 'static')))
 
@@ -21,6 +31,9 @@ server.use('/', express.static(path.join(__dirname, 'static')))
 
 server.set('view engine', 'ejs')
 server.set('views', path.join(__dirname, 'views'))
+
+
+
 
 
 

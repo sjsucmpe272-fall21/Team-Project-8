@@ -47,4 +47,11 @@ module.exports = {
     }),
     new MiniCssExtractPlugin()
   ],
+  devServer: {
+    historyApiFallback: true,
+    open: true,
+    compress: true,
+    hot: true,
+    port: 3000,
+  }
 }
