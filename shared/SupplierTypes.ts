@@ -12,7 +12,8 @@ export namespace SupplierTypes {
     items: (Item & {
       quantity: number;
       capacity: number;
-    })[]
+    })[];
+    sales: number;
   }
 
   export interface ClimateUpdate {

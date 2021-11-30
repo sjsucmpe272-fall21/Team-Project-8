@@ -66,6 +66,7 @@
     "promise-mysql": "^5.0.4",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-data-table-component": "^7.4.5",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.3.0",
     "react-spinners": "^0.11.0",

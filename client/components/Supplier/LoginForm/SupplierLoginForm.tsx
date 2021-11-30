@@ -49,11 +49,20 @@ export const SupplierLoginForm: React.FC<Props> = ({toSignUp}) => {
         <h2>Login</h2>
         <div className="form-group inputStyle">
           <label htmlFor="email">Email: </label>
-          <input type="text" name="email" id="email" onChange={e => setDetails({ ...details, email: e.target.value })} value={details.email} />
+          <input 
+            type="text" 
+            name="email" 
+            id="email" 
+            autoFocus={true}
+            onChange={e => setDetails({ ...details, email: e.target.value })} value={details.email} />
         </div>
         <div className="form-group inputStyle">
           <label htmlFor="password">Password: </label>
-          <input type="password" name="password" id="password" onChange={e => setDetails({ ...details, password: e.target.value })} value={details.password} />
+          <input 
+            type="password" 
+            name="password" 
+            id="password" 
+            onChange={e => setDetails({ ...details, password: e.target.value })} value={details.password} />
         </div>
         {(error != "") ? (<div className="login-error">{error}</div>) : ""}
         <input type="submit" value="Login"/>

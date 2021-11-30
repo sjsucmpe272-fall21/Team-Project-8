@@ -1,8 +1,11 @@
 import express from 'express';
 import passport from 'passport'
 import { Strategy as LocalStrategy }  from 'passport-local';
+import * as _ from 'lodash';
+
 import { SupplierTypes } from '../../shared/SupplierTypes';
-import { machineModel } from './models/MachineModels';
+import { machineModel } from './models/MachineModel';
+import { paymentModel } from './models/PaymentModel';
 import { userModel } from './models/UserModel';
 
 export const WebAppRouter = express.Router();
@@ -43,9 +46,7 @@ WebAppRouter.route('/')
 })
  
 WebAppRouter.route('/login')
-  .post(passport.authenticate('local', {
-    failureRedirect: '/login'
-  }), (req, res) => {
+  .post(passport.authenticate('local'), (req, res) => {
     console.log("After authentication", req.method);
     res.status(200).send("Successfully log in");
   })
@@ -73,6 +74,7 @@ WebAppRouter.route('/signup')
 
 const protectedRouteMiddleware: express.Handler = (req, res, next) => {
   if (req.isAuthenticated()) {
+    console.log("Request is authenticated");
     next();
   } else {
     res.redirect(WEB_APP_HOME_PAGE);
@@ -84,9 +86,9 @@ type AuthenticatedRequest = express.Request & { user: SupplierTypes.User };
 WebAppRouter.route('/machines')
   .get(protectedRouteMiddleware, async (req: any, res) => {
     const machines = await machineModel.getMachinesForUser(req.user.id);
-    res.send(machines)
-  })
 
+    res.send(machines);
+  })
 
 
 
