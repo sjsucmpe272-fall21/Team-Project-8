@@ -6,6 +6,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import * as bodyParser from 'body-parser';
+import passport from 'passport';
 
 import { App } from '../client/components/app'
 import { VendingMachineRouter } from './vendingMachine/VendingMachineRouter';
@@ -18,7 +19,14 @@ server.use(session({
   secret              : 'cmpe272_react_nodejs_mysql',
   resave              : false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
   saveUninitialized   : false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
+  cookie: {
+    maxAge: 1000*30
+  }
 }));
+
+server.use(passport.initialize());
+server.use(passport.session());
+
 server.use(bodyParser.json());
 
 server.use('/api/vm', VendingMachineRouter); 

@@ -31,7 +31,6 @@ function useAuth(): AuthContext {
     authed,
     login: async ({email, password}) => {
       try {
-
         const authenticateResult = await axios.post(
           '/wa/login',
           {
@@ -39,6 +38,7 @@ function useAuth(): AuthContext {
             password: password 
           }
         );
+        if (authenticateResult)
         setAuthed(true);
         return true;
       } catch (err) {

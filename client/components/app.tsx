@@ -47,9 +47,19 @@ export const App: React.FC = () => {
           <Supplier/>
         </Route>
         <Route exact={true} path='/dashboard'>
-          {/* <RequireAuth> */}
-            <NavBar/>
-          {/* </RequireAuth> */}
+          <RequireAuth>
+            <NavBar selectedItem="Dashboard"/>
+          </RequireAuth>
+        </Route>
+        <Route exact={true} path='/machines'>
+          <RequireAuth>
+            <NavBar selectedItem="Machines"/>
+          </RequireAuth>
+        </Route>
+        <Route exact={true} path='/predictions'>
+          <RequireAuth>
+            <NavBar selectedItem="Predictions"/>
+          </RequireAuth>
         </Route>
       </AuthProvider>
     </div>

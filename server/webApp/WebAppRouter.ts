@@ -1,7 +1,12 @@
 import express from 'express';
 import passport from 'passport'
 import { Strategy as LocalStrategy }  from 'passport-local';
-import { User, userModel } from './models/UserModel';
+import * as _ from 'lodash';
+
+import { SupplierTypes } from '../../shared/SupplierTypes';
+import { machineModel } from './models/MachineModel';
+import { paymentModel } from './models/PaymentModel';
+import { userModel } from './models/UserModel';
 
 export const WebAppRouter = express.Router();
 
@@ -33,8 +38,6 @@ passport.use(new LocalStrategy({
   }
 }));
 
-WebAppRouter.use(passport.initialize());
-WebAppRouter.use(express.json());
 
 WebAppRouter.route('/')
 .get((req, res) => {
@@ -68,6 +71,25 @@ WebAppRouter.route('/signup')
       res.status(409).send(err.message);
     }
   })
+
+const protectedRouteMiddleware: express.Handler = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    console.log("Request is authenticated");
+    next();
+  } else {
+    res.redirect(WEB_APP_HOME_PAGE);
+  }
+}
+
+type AuthenticatedRequest = express.Request & { user: SupplierTypes.User };
+
+WebAppRouter.route('/machines')
+  .get(protectedRouteMiddleware, async (req: any, res) => {
+    const machines = await machineModel.getMachinesForUser(req.user.id);
+
+    res.send(machines);
+  })
+
 
 
 
