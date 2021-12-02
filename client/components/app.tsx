@@ -5,6 +5,7 @@ import { Supplier } from './Supplier/Supplier'
 import { VendingMachine  } from './VendingMachine/VendingMachine'
 import { AuthConsumer, AuthProvider } from './Supplier/AuthContext'
 import { NavBar } from './Supplier/NavBar'
+import { VendingMachineList } from './VendingMachine/VendingMachineList'
 
 export const App: React.FC = () => {
   const { authed } = AuthConsumer();
@@ -40,7 +41,10 @@ export const App: React.FC = () => {
             </h1>
           </div>
         </Route>
-        <Route path='/vending'>
+        <Route path='/allmachines'>
+          <VendingMachineList/>
+        </Route>
+        <Route path='/vending/:machineId'>
           <VendingMachine/>
         </Route>
         <Route exact={true} path='/supplier'>

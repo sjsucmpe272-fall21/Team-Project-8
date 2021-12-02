@@ -6,6 +6,7 @@ import { connection } from '../../Database/Connection';
 import { SupplierTypes } from '../../../shared/SupplierTypes';
 import { constrcutINClause } from './utlis';
 import { paymentModel } from './PaymentModel';
+import { VendingTypes } from '../../../shared/VendingTypes';
 
 class MachineModel {
   async getMachinesForUser(userId: string): Promise<SupplierTypes.Machine[]> {
@@ -30,6 +31,64 @@ class MachineModel {
 
     return aggregateMachines(machines, items, payments);
   }
+
+  async getMachine(machineId: string): Promise<VendingTypes.Machine | undefined> {
+    const conn = await connection;
+
+    const machines = await conn.query(`
+      SELECT MACHINE_ID, FLOOR, MACHINE_NUMBER, OWNER_ID
+      FROM vending_machines 
+      WHERE MACHINE_ID="${machineId}"
+    `);
+
+    const machine = machines[0];
+
+    if (!machine) {
+      return undefined;
+    }
+
+    const items = await conn.query(`
+      SELECT * 
+      FROM machine_items mi
+      INNER JOIN items i
+      ON mi.PRODUCT_ID = i.ITEM_ID
+      WHERE M_ID="${machineId}"
+    `);
+
+    return aggregateVMItems(
+      machine, items
+    );
+  }
+
+  async getAllMachineIds(): Promise<string[]> {
+    const conn = await connection;
+
+    const machines = await conn.query(`
+      SELECT MACHINE_ID 
+      FROM vending_machines
+    `);
+
+    return machines.map(({MACHINE_ID}: any) => MACHINE_ID);
+  }
+}
+
+const aggregateVMItems = (
+  machine: any,
+  items: any[],
+): VendingTypes.Machine => {
+  const { MACHINE_ID, FLOOR, MACHINE_NUMBER, OWNER_ID } = machine;
+  return ({
+    machineId: MACHINE_ID,
+    floor: FLOOR,
+    machineNumber: MACHINE_NUMBER,
+    ownerId: OWNER_ID,
+    items: items.map(({ ITEM_ID, ITEM_NAME, price, QUANTITY }) => ({
+      id: ITEM_ID,
+      name: ITEM_NAME,
+      price,
+      quantity: QUANTITY
+    })) || []
+  });
 }
 
 

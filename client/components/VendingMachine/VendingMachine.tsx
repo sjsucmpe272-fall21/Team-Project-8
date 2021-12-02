@@ -1,20 +1,21 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+
+import { Vending } from './containers/VendingMain';
+import { store } from './store';
+
+// import vendingMachine from './VendingMachine/app/index.js';
 
 import './VendingMachine.scss';
 
 export const VendingMachine: React.FC = () => {
   return (
-    <>
+    <InjectionProvider store={store}>
       <h1 className="vending-machine-title">
         Main Vending Machine page
       </h1> 
-      <div>
-        <InteractiveButton text="First Button"/>
-      </div>
-      <div>
-        <InteractiveButton text="Second Button"/>
-      </div>
-    </>
+      <Vending/>
+    </InjectionProvider>
   )
 }
 
@@ -22,14 +23,20 @@ interface ButtonProps {
   text: string;
 }
 
-const InteractiveButton: React.FC<ButtonProps> = ({text}) => {
-  const [count, setCount] = React.useState(0);
 
-  return (
-    <button onClick={() => {
-      
-      setCount(count + 1);}}>
-      {text} {count}
-    </button>
-  )
+class InjectionProvider extends React.Component<any> {
+  /**
+   * Renders the [[InjectionProvider]] into the component tree.
+   * 
+   * [[InjectionProvider#render]] simply creates a MobX 'Provider' component and supplies it with the
+   * current props.
+   */
+  public render(): JSX.Element {
+      const stores = { ...this.props };
+
+      // Remove the 'children' because we don't want that passed around via React's Context mechanism
+      delete stores.children;
+
+      return React.createElement(Provider as any, stores, this.props.children);
+  }
 }
