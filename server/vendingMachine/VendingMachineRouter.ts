@@ -2,6 +2,7 @@ import express from 'express'
 
 import { logger } from '../Logger';
 import { connection as connPromise } from '../Database/Connection';
+import { machineModel } from '../webApp/models/MachineModel';
 
 export const VendingMachineRouter = express.Router();
 
@@ -32,6 +33,36 @@ VendingMachineRouter.route('/nearestMachineCheck')
       res.send(error)
     }
   })
+
+VendingMachineRouter.route('/all')
+  .get(async(req, res) => {
+    const machineIds = await machineModel.getAllMachineIds();
+
+    res.send(machineIds);
+  })
+
+VendingMachineRouter.route('/machineItems')
+  .get(async(req, res) => {
+    const conn = await connPromise;
+
+    const { machineId } = req.query;
+
+    if (typeof machineId !== 'string') {
+      return res.status(400).send();
+    }
+
+    const machine = await machineModel.getMachine(machineId);
+
+    if (!machine) {
+      res.status(404).send();
+    } else { 
+      res.send(machine);
+    }
+
+    
+
+  });
+
 
 VendingMachineRouter.route('/quantityCheckandUpdation')
   .get(async (req, res) => {

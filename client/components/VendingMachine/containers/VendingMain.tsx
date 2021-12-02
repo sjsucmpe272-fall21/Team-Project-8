@@ -1,16 +1,28 @@
 import React from 'react'
 import { Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 import { connect } from 'react-redux'
+import axios from 'axios';
 
-import Items from 'components/items'
-import { pay, confirmPayment, cancelPayment } from 'actions/payment'
+import { VendingTypes } from '../../../../shared/VendingTypes';
+import { Items } from '../components/items';
+import { pay, confirmPayment, cancelPayment } from '../actions';
+import { VendingMachineState } from '../store';
 
-@connect((store) => ({
-  items: store.items.list,
-  basket: store.items.basket,
-  modal: store.items.modal
-}))
-export default class Main extends React.Component {
+interface Props {
+  items: VendingTypes.Item[];
+  basket: VendingTypes.Item[];
+  modal: boolean;
+}
+
+const mapStateToProps = (store: {
+  items: VendingMachineState
+}) => ({
+    items: store.items.list, 
+    basket: store.items.basket,
+    modal: store.items.modal
+  })
+
+class VendingMain extends React.Component<Props> {
   state = { modal: false }
 
   toggle() {
@@ -22,7 +34,7 @@ export default class Main extends React.Component {
   render () {
     const { items, basket, modal } = this.props
 
-    let totalAmount = basket.reduce((acc, item) => { return acc + item.price * item.count }, 0)
+    let totalAmount = basket.reduce((acc, item) => { return acc + item.price * (item.count ?? 0) }, 0) 
 
     return (
       <Container>
@@ -36,22 +48,10 @@ export default class Main extends React.Component {
             <h2 className="text-center">Basket</h2>
             <Items items={ basket } />
             <p className="text-center">Total: <b>€{ totalAmount }</b></p>
-            <Button color="success" block onClick={ pay }>Pay</Button>
+            <Button color="success" onClick={ pay }>Pay</Button>
           </Col>
         </Row>
-        <h3>Instructions</h3>
-        <ul>
-          <li>You can select one or more items to be added to the basket by clicking on a 'Select' button.</li>
-          <li>You can remove a single item from the basket by clicking on 'Remove' button.</li>
-          <ul>
-            <li>You can click 'Pay' to start the payment process.</li>
-            <li>If you click on 'Cancel' or anywhere else the payment will be canceled and nothing will be changed.</li>
-            <li>If you click on 'Confirm' button all items will be removed from the basket.</li>
-          </ul>
-          <li>Apps state is persisted to local storage.</li>
-        </ul>
-        <p><a href="https://github.com/DeividasK/online-vending-machine">Project repository</a> <small>(includes reasoning behind technology choices)</small></p>
-
+        
         <Modal isOpen={ modal } toggle={ cancelPayment }>
           <ModalHeader toggle={ cancelPayment }>Payment provider</ModalHeader>
           <ModalBody>
@@ -67,3 +67,5 @@ export default class Main extends React.Component {
     )
   }
 }
+
+export const Vending = connect(mapStateToProps)(VendingMain);

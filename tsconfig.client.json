@@ -16,5 +16,6 @@
     "sourceMap": true, // Generate corrresponding .map file
     "strictNullChecks": true,
     "noImplicitAny": true,
+    "experimentalDecorators": true
   },
 }
