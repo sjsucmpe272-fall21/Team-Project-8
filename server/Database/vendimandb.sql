@@ -63,7 +63,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES ('102f61f8-4b51-11ec-902a-b05adad3c217','sprite',2.00),('1030b8e3-4b51-11ec-902a-b05adad3c217','coke',2.50),('10322a92-4b51-11ec-902a-b05adad3c217','hot cheetos',1.50),('1033e3b6-4b51-11ec-902a-b05adad3c217','pringles',1.50),('1034dd74-4b51-11ec-902a-b05adad3c217','doritos',2.00),('1036a9da-4b51-11ec-902a-b05adad3c217','shrimp cup noodles',5.00),('1037b911-4b51-11ec-902a-b05adad3c217','snickers',3.50),('103955b3-4b51-11ec-902a-b05adad3c217','kit kat',1.50),('103a7fbf-4b51-11ec-902a-b05adad3c217','baby ruth',1.00),('103bfff9-4b51-11ec-902a-b05adad3c217','butter finger',1.50);
+INSERT INTO `items` VALUES ('102f61f8-4b51-11ec-902a-b05adad3c217','sprite',2.00),('1030b8e3-4b51-11ec-902a-b05adad3c217','coke',2.50),('10322a92-4b51-11ec-902a-b05adad3c217','hot cheetos',1.50),('1033e3b6-4b51-11ec-902a-b05adad3c217','pringles',1.50),('1034dd74-4b51-11ec-902a-b05adad3c217','doritos',2.00),('1036a9da-4b51-11ec-902a-b05adad3c217','noodles',5.00),('1037b911-4b51-11ec-902a-b05adad3c217','snickers',3.50),('103955b3-4b51-11ec-902a-b05adad3c217','kit kat',1.50),('103a7fbf-4b51-11ec-902a-b05adad3c217','baby ruth',1.00),('103bfff9-4b51-11ec-902a-b05adad3c217','butter finger',1.50);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,15 +171,12 @@ DROP TABLE IF EXISTS `payments`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `payments` (
   `payment_id` varchar(255) NOT NULL,
-  `product_id` varchar(255) DEFAULT NULL,
   `price` decimal(4,2) DEFAULT NULL,
   `credit_card_number` bigint DEFAULT NULL,
   `p_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `machine_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`payment_id`),
-  KEY `product_id` (`product_id`),
   KEY `machine_id` (`machine_id`),
-  CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `machine_items` (`PRODUCT_ID`),
   CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`machine_id`) REFERENCES `machine_items` (`M_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -191,6 +188,23 @@ CREATE TABLE `payments` (
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+DROP TABLE IF EXISTS `payment_product`;
+CREATE TABLE `payment_product` (
+  `payment_id` varchar(255) NOT NULL,
+  `product_id` varchar(255) NOT NULL,
+  `unit_price` decimal(4,2) NOT NULL,
+  `quantity` int NOT NULL,
+  PRIMARY KEY (`payment_id`, `product_id`),
+  CONSTRAINT `payment_product_ibfk_1` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`),
+  CONSTRAINT `payment_product_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `items` (`ITEM_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES `payment_product` WRITE;
+/*!40000 ALTER TABLE `payment_product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `payment_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -256,7 +270,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `purchaseItem` */;
+/*!50003 DROP PROCEDURE IF EXISTS `purchaseItems` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -265,18 +279,43 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+
+DROP PROCEDURE IF EXISTS `createPayment`;
+
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `purchaseItem`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createPayment`(
+paymentId varchar(255),
 machineId varchar(255),
 cost decimal(4,2),
-card_number bigint,
-p_id varchar(255))
+card_number bigint)
 BEGIN
 
-insert into payments (payment_id,product_id,price,credit_card_number,machine_id)
-values (uuid(),p_id,cost,card_number,machineId);
+insert into payments (payment_id,price,credit_card_number,machine_id)
+values (paymentId,cost,card_number,machineId);
 
-UPDATE MACHINE_ITEMS SET Quantity = quantity-1 where m_id=machineId and PRODUCT_ID=p_id;
+END ;;
+DELIMITER ;
+
+
+
+
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `purchaseItems`(
+paymentId varchar(255),
+productId varchar(255),
+machineId varchar(255),
+unit_price decimal(4,2),
+count int)
+BEGIN
+
+
+insert into payment_product (payment_id, product_id, unit_price, quantity)
+values (paymentId,productId, unit_price, count);
+
+UPDATE MACHINE_ITEMS SET Quantity = quantity-count where m_id=machineId and PRODUCT_ID=productId;
+
+
+
 
 END ;;
 DELIMITER ;
@@ -296,10 +335,11 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `quantityCheck`(
 machine_id varchar(255),
-p_id varchar(255))
+p_id varchar(255),
+count int)
 BEGIN
 
-SELECT quantity from machine_items where product_id =p_id and m_id=machine_id and quantity >0;
+SELECT quantity from machine_items where product_id =p_id and m_id=machine_id and quantity >=count;
 
 
 END ;;

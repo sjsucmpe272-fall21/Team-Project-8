@@ -1,9 +1,10 @@
 export namespace VendingTypes {
   export interface Item {
-    id: number,
+    id: string,
     name: string,
     price: number,
-    count?: number
+    count?: number,
+    quantity?: number,
   }
 
   export interface Machine {
@@ -11,8 +12,11 @@ export namespace VendingTypes {
     floor: number;
     machineNumber: number;
     ownerId: string;
-    items: (Item & {
-      quantity: number;
-    })[];
+    items: Item[];
+  }
+
+  export interface NearbyMachine {
+    floor: number;
+    MACHINE_NUMBER: number;
   }
 }

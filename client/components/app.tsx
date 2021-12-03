@@ -17,7 +17,7 @@ export const App: React.FC = () => {
           <Link to='/'>Home</Link>
         </li>
         <li>
-          <Link to='/vending'>Vending Machine</Link>
+          <Link to='/allmachines'>All Vending Machines</Link>
         </li>
         <li>
           <Link to='/supplier'>Supplier Login Page</Link>
@@ -45,7 +45,7 @@ export const App: React.FC = () => {
           <VendingMachineList/>
         </Route>
         <Route path='/vending/:machineId'>
-          <VendingMachine/>
+          <VendingMachine />
         </Route>
         <Route exact={true} path='/supplier'>
           <Supplier/>

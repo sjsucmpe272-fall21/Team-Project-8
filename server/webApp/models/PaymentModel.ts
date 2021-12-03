@@ -11,7 +11,7 @@ class PaymentModel {
     const today = new Date();
 
     const payments = await conn.query(`
-      SELECT payment_id, product_id, price, credit_card_number, p_time, machine_id
+      SELECT payment_id, price, credit_card_number, p_time, machine_id
       FROM payments 
       WHERE machine_id IN ${constrcutINClause(machineIds)}
       AND (p_time BETWEEN '${jsDateToMySQLDate(
@@ -19,19 +19,41 @@ class PaymentModel {
       )}' AND '${jsDateToMySQLDate(today)}')
     `);
 
-    return payments.map(paymentModelToPayment);
-  }
-}
+    const items = await conn.query(`
+      SELECT payment_id, product_id, unit_price, quantity
+      FROM payment_product
+      WHERE payment_id IN ${constrcutINClause(payments.map(({payment_id}: {payment_id: string}) => payment_id))}
+    `);
 
-const paymentModelToPayment = (payment: any): SupplierTypes.Payment => {
-  return ({
-    paymentId: payment.payment_id,
-    itemId: payment.product_id,
-    price: payment.price,
-    credit_card_number: payment.credit_card_number,
-    timestamp: payment.p_time,
-    machineId: payment.machine_id
-  })
+    const itemDetails = await conn.query(`
+      SELECT ITEM_ID, ITEM_NAME
+      FROM items
+      WHERE ITEM_ID IN ${constrcutINClause(Array.from(new Set(items.map(({product_id}: {product_id: string}) => product_id))))}
+    `)
+
+    const itemMap = _.keyBy(itemDetails, 'ITEM_ID');
+    const paymentItems = _.groupBy(items, ({payment_id}) => payment_id);
+
+    return payments.map((payment: any): SupplierTypes.Payment => {
+      const paymentId = payment.payment_id;
+      return ({
+        paymentId,
+        items: paymentItems[paymentId].map((item) => {
+          const itemId = item.product_id;
+          return ({
+            itemId,
+            name: itemMap[itemId].ITEM_NAME,
+            unitPrice: item.unit_price,
+            quantity: item.quantity
+          })
+        }),
+        price: payment.price,
+        credit_card_number: payment.credit_card_number,
+        timestamp: payment.p_time,
+        machineId: payment.machine_id
+      })
+    });
+  }
 }
 
 

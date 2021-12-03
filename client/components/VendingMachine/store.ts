@@ -11,9 +11,14 @@ export const store = configureStore({
 });
 
 export interface VendingMachineState {
-  list: VendingTypes.Item[],
-  basket: VendingTypes.Item[],
-  modal: boolean
+  machine: Omit<VendingTypes.Machine, 'items'>;
+  list: VendingTypes.Item[]
+  basket: VendingTypes.Item[];
+  modal: boolean;
+  nearby: {
+    product: VendingTypes.Item;
+    machines: VendingTypes.NearbyMachine[]
+  } | undefined;
 }
 
 export type AppDispatch = typeof store.dispatch;

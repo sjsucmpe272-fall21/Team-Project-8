@@ -1,8 +1,10 @@
 import express from 'express'
+import uuid from 'uuid';
 
 import { logger } from '../Logger';
 import { connection as connPromise } from '../Database/Connection';
 import { machineModel } from '../webApp/models/MachineModel';
+import { VendingTypes } from '../../shared/VendingTypes';
 
 export const VendingMachineRouter = express.Router();
 
@@ -65,41 +67,60 @@ VendingMachineRouter.route('/machineItems')
 
 
 VendingMachineRouter.route('/quantityCheckandUpdation')
-  .get(async (req, res) => {
-    const { machineId, productId, cost, card_number } = req.query;
-
-    let sql1 = `CALL quantityCheck('${machineId}','${productId}')`
-    logger.info(
-      `Calling quantityCheck for the product productId(${productId}) in the machine machineId(${machineId})`
-    );
+  .post(async (req, res) => {
+    const { machineId, basket, name, cardNumber } = req.body;
 
     const connection = await (await connPromise).getConnection();
-
+    
+    basketTypeAssertion(basket);
+    
     try {
-      const results = await connection.query(sql1);
-      const result = results[0][0].quantity;
+      for (const item of basket) {
+        const { id: productId, count } = item;
 
-      if (result <= 0) {
-        res.send('Item out of stock')
+        let sql1 = `CALL quantityCheck('${machineId}','${productId}', '${count}')`
+        logger.info(
+          `Calling quantityCheck for the product productId(${productId}) in the machine machineId(${machineId})`
+        );
+        const results = await connection.query(sql1);
+        const result = results[0][0].quantity;
+  
+        if ( count && result < count) {
+          res.send('Not enough item: ' + item.name);
+        }
+
       }
 
       try {
         await connection.beginTransaction();
 
-        const sqlQuery = `CALL purchaseItem('${machineId}',${cost},${card_number},'${productId}')`;
+        const totalCost = basket.reduce((prev, {count, price}) => prev + (count ?? 0) * price, 0);
+
+        const paymentId = uuid.v4();
+
+        const sqlQuery = `CALL createPayment('${paymentId}', '${machineId}',${totalCost},${cardNumber})`;
 
         try {
-          const results2 = connection.query(sqlQuery);
+          const results2 = await connection.query(sqlQuery);
+
+          for (const item of basket) {
+            const updateItemQuery = `CALL purchaseItems('${paymentId}','${item.id}', '${machineId}', ${item.price}, ${item.count})`
+            await connection.query(updateItemQuery);
+          }
+          
+
+
           await connection.commit();
           connection.release();
           res.send({
             message: "Transaction Successful",
-            results
+            results2
           });
 
         } catch (err) {
           await connection.rollback();
           await connection.release();
+          console.log(err);
           res.send("Error");
         }
 
@@ -119,3 +140,9 @@ VendingMachineRouter.route('/quantityCheckandUpdation')
     }
   })
 
+function basketTypeAssertion(basket: any): asserts basket is VendingTypes.Item[] {
+  if (Array.isArray(basket)) {
+    return; 
+  }
+  throw new Error("basket is not of correct type");
+}

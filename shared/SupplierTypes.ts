@@ -31,7 +31,12 @@ export namespace SupplierTypes {
 
   export interface Payment {
     paymentId: string;
-    itemId: string;
+    items: {
+      itemId: string;
+      name: string;
+      unitPrice: number;
+      quantity: number;
+    }[];
     price: number;
     credit_card_number: string;
     timestamp: Date;

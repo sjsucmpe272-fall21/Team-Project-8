@@ -18,10 +18,9 @@ export const VendingMachineList: React.FC = () => {
       if (machineIds === undefined) {
         const response = await axios.get('/vm/all');
   
-        console.log(response.data);
         setMachineIdes(response.data);
       }
-    }
+    } 
     fetchAllIds();
   }, []);
 

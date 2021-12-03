@@ -1,14 +1,21 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import { Vending } from './containers/VendingMain';
 import { store } from './store';
+import { initialLoad  } from './actions';
 
 // import vendingMachine from './VendingMachine/app/index.js';
 
 import './VendingMachine.scss';
 
+
 export const VendingMachine: React.FC = () => {
+  const { machineId } = useParams<{machineId: string}>();
+
+  initialLoad(machineId);
+
   return (
     <InjectionProvider store={store}>
       <h1 className="vending-machine-title">

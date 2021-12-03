@@ -23,7 +23,6 @@ interface Props {
 export const MachineDetails: React.FC<Props> = ({data}) => {
   return (
     <pre className="machine-details">
-      awejrpaoewrjrao
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           width={500}

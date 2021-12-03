@@ -44,7 +44,7 @@ const columns: TableColumn<SupplierTypes.Machine>[] = [
 export const Machines: React.FC = () => {
   const [machines, setMachines] = React.useState<SupplierTypes.Machine[]>([]);
   const tableMachines = React.useMemo<TableMachine[]>(
-    () => machinesToTable(machines), [machines]);
+    () => machines ? machinesToTable(machines) : [], [machines]);
   const actionsMemo = React.useMemo(() => 
     <ExportButton onExport={() => downloadCSV(tableMachines)} />, [tableMachines]);
 
