@@ -50,19 +50,9 @@ export const App: React.FC = () => {
         <Route exact={true} path='/supplier'>
           <Supplier/>
         </Route>
-        <Route exact={true} path='/dashboard'>
+        <Route exact={true} path='/supplier/:page'>
           <RequireAuth>
-            <NavBar selectedItem="Dashboard"/>
-          </RequireAuth>
-        </Route>
-        <Route exact={true} path='/machines'>
-          <RequireAuth>
-            <NavBar selectedItem="Machines"/>
-          </RequireAuth>
-        </Route>
-        <Route exact={true} path='/predictions'>
-          <RequireAuth>
-            <NavBar selectedItem="Predictions"/>
+            <NavBar/>
           </RequireAuth>
         </Route>
       </AuthProvider>

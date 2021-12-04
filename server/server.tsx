@@ -20,7 +20,7 @@ server.use(session({
   resave              : false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
   saveUninitialized   : false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
   cookie: {
-    maxAge: 1000*30
+    maxAge: 1000*60*60 // An hour
   }
 }));
 

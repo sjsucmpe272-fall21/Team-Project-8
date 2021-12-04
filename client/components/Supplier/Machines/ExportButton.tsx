@@ -1,12 +1,21 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 
-import { TableMachine } from "./Machines";
+import { SupplierTypes } from '../../../../shared/SupplierTypes';
+
 
 
 export const ExportButton: React.FC<{
   onExport: () => void
 }> = ({ onExport }) => <button className="export-machines-button" onClick={e => onExport()}>Export</button>;
 
+
+type TableMachine = Pick<SupplierTypes.Machine, 'machineNumber' | 'sales'>  &
+{
+	floor: string;
+  stockLevel: string;
+  [key: string]: any;
+}
 
 // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
 function convertArrayOfObjectsToCSV(data: TableMachine[]) {
@@ -36,9 +45,11 @@ function convertArrayOfObjectsToCSV(data: TableMachine[]) {
 }
 
 // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
-export function downloadCSV(array: TableMachine[]) {
+export function downloadCSV(array: SupplierTypes.Machine[]) {
+	const convertedArray = machinesToTable(array);
+
 	const link = document.createElement('a');
-	let csv = convertArrayOfObjectsToCSV(array);
+	let csv = convertArrayOfObjectsToCSV(convertedArray);
 	if (csv == null) return;
 
 	const filename = 'export.csv';
@@ -50,4 +61,44 @@ export function downloadCSV(array: TableMachine[]) {
 	link.setAttribute('href', encodeURI(csv));
 	link.setAttribute('download', filename);
 	link.click();
+}
+
+function machinesToTable(machines: SupplierTypes.Machine[]): TableMachine[] {
+  const allItemNames = Array.from(new Set(_.flatMap(machines, ({items}) => items.map(({name}) => name))));
+
+  const machineTable =  machines.map(({floor, machineNumber, sales, items}): TableMachine => ({
+    floor: floor.toString(),
+		machineNumber,
+    sales, 
+    stockLevel: getStockLevel(items),
+    ...itemsToTable(items, allItemNames)
+  }));
+
+	machineTable.push({
+		floor: 'Total',
+		machineNumber: 0,
+		sales: machineTable.reduce((prev, {sales}) => prev+sales,0),
+		stockLevel: `${0}`,
+		...allItemNames.reduce((prev, name) => {
+			return {
+				...prev,
+				[name]: machineTable.reduce((prev, row) => prev+row[name],0)
+			}
+		}, {})
+	});
+	return machineTable;
+}
+
+function itemsToTable(items: SupplierTypes.Machine['items'], allKeys: string[]): TableMachine['items'] {
+	const itemsMap = _.keyBy(items, 'name');
+	return allKeys.reduce((prev, name) => {
+		const selectedItem = itemsMap[name];
+		return ({
+		...prev,
+		[name]: selectedItem ? selectedItem.capacity-selectedItem.quantity : 0
+	})}, {});
+}
+
+export function getStockLevel(items: SupplierTypes.Machine['items']): string {
+  return ((_.sumBy(items, ({quantity}) => quantity) /_.sumBy(items, ({capacity}) => capacity))*100  || 0).toFixed(2);
 }

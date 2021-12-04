@@ -13,7 +13,7 @@ export const Supplier: React.FC = () => {
 
   const [signUp, setSignUp] = React.useState(false);
   return authed ? (
-    <Redirect to='/dashboard'/>
+    <Redirect to='/supplier/dashboard'/>
   ) : (
     <>
       <h1>Supplier Page</h1>

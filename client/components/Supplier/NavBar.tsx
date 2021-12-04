@@ -1,49 +1,56 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { initialLoad } from './actions/machine';
 
 import { AuthConsumer } from './AuthContext';
 import { Dashboard } from './Dashboard/Dashboard';
 import { Machines } from './Machines/Machines';
 
 import './NavBar.scss';
+import { store } from './store';
 
 
-type NavItem = 'Dashboard' | 'Machines' | 'Stocks' | 'Predictions';
+type NavItem = 'dashboard' | 'machines' | 'stocks' | 'predictions';
 
 interface Props {
-  selectedItem: NavItem;
 }  
+ 
 
 
+export const NavBar: React.FC<Props> = ({}) => {
 
-export const NavBar: React.FC<Props> = ({selectedItem}) => {
   const { logout } = AuthConsumer();
+  const { page } = useParams<{page:NavItem}>();
+  initialLoad();
 
   return (
-    <div className='main-component'>
-      <div className='navigation-sidebar'>
-        <div className='navigation-links'>
-          <Link className='navigation-item' to='/dashboard'>Dashboard</Link>
-          <Link className='navigation-item' to='/machines'>Machines</Link>
-          <Link className='navigation-item' to='/predictions'>Predictions</Link>
+    <Provider store={store}>
+      <div className='main-component'>
+        <div className='navigation-sidebar'>
+          <div className='navigation-links'>
+            <Link className='navigation-item' to='/supplier/dashboard'>Dashboard</Link>
+            <Link className='navigation-item' to='/supplier/machines'>Machines</Link>
+            <Link className='navigation-item' to='/supplier/predictions'>Predictions</Link>
+          </div>
+          <button onClick={logout}>Log out</button>
         </div>
-        <button onClick={logout}>Log out</button>
+        <div className='main-page'>
+          {renderComponent(page)}
+        </div>
       </div>
-      <div className='main-page'>
-        {renderComponent(selectedItem)}
-      </div>
-    </div>
+    </Provider>
   );
 }
 
 const renderComponent = (type: NavItem) => {
   switch (type) {
-    case 'Dashboard':
+    case 'dashboard':
       return <Dashboard/>;
-    case 'Machines':
+    case 'machines':
       return <Machines/>;
-    case 'Stocks':
-    case 'Predictions':
+    case 'stocks':
+    case 'predictions':
       return <div>Not implemented</div>
     default: 
       "Wrong nav item type";

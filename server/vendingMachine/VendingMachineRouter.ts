@@ -98,7 +98,7 @@ VendingMachineRouter.route('/quantityCheckandUpdation')
 
         const paymentId = uuid.v4();
 
-        const sqlQuery = `CALL createPayment('${paymentId}', '${machineId}',${totalCost},${cardNumber})`;
+        const sqlQuery = `CALL createPayment('${paymentId}', '${machineId}',${totalCost},'${cardNumber}')`;
 
         try {
           const results2 = await connection.query(sqlQuery);

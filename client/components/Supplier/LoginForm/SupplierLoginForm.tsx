@@ -41,7 +41,7 @@ export const SupplierLoginForm: React.FC<Props> = ({toSignUp}) => {
   );
 
 
-  return redirect ? (
+  return redirect ? ( 
     <Redirect to='/supplier/dashboard'/>
   ) : (
     <form onSubmit={Login} className="login-signup-form">

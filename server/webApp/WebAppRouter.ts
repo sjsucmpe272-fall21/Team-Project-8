@@ -90,6 +90,23 @@ WebAppRouter.route('/machines')
     res.send(machines);
   })
 
+WebAppRouter.route('/machine/restock')
+  .post(protectedRouteMiddleware, async(req: any, res) => {
+    const {machineId} = req.body;
+    if (!machineId) {
+      return res.status(400).send();
+    }
+
+    const machine = await machineModel.restockMachine(machineId);
+
+    res.send(machine);
+  })
+
+WebAppRouter.route('/authenticated')
+  .get(protectedRouteMiddleware, (req: any, res) => {
+    res.status(200).send();
+  })
+
 
 
 
@@ -99,12 +116,5 @@ WebAppRouter.route('*')
   .get((_, res) => {
     res.redirect(WEB_APP_HOME_PAGE);
   })
-
-
-
-
-
-
-
 
 

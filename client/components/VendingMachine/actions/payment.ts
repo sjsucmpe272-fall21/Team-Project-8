@@ -15,7 +15,6 @@ interface PaymentTransaction {
   cardNumber: string;
 }
 export async function confirmPayment(transaction: PaymentTransaction) {
-  console.log("Confirm Payment Reducer", transaction);
   const result = await axios.post('/vm/quantityCheckandUpdation', transaction);
 
   console.log("Confirm result: ", result);

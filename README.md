@@ -22,8 +22,6 @@ We'll also build an internal service for vending machines to talk to each other,
   - Integrate our API to their machines for automatically stock updates and nearby suggestion features
   - Receive notifications when stock is or will be running out of stock
 
-- **Consumer:** 
-  - Help improve the accuracy of stock information by uploading a picture of the machine.
 
 - **Smart Machine:**
   - Be able to display nearby stock info directly on the machines if a requested product runs out but is available at other machines. 

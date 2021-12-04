@@ -1,23 +1,20 @@
 import * as React from 'react';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { Button } from 'reactstrap';
 import { css } from "@emotion/react";
 import { ClimbingBoxLoader } from 'react-spinners';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import _ from 'lodash';
 
 import { SupplierTypes } from '../../../../shared/SupplierTypes';
-import { ExportButton, downloadCSV } from './ExportButton';
+import { ExportButton, downloadCSV, getStockLevel } from './ExportButton';
 import { MachineDetails } from './MachineDetails';
+
 import './Machines.scss';
 
 const SPINNER_STYLE = css`
   position: unset;
 `
-
-export type TableMachine = Pick<SupplierTypes.Machine, 'floor' | 'machineNumber' | 'sales'>  &
-{
-  stockLevel: string;
-}
 
 const columns: TableColumn<SupplierTypes.Machine>[] = [
   {
@@ -42,49 +39,48 @@ const columns: TableColumn<SupplierTypes.Machine>[] = [
 ]
 
 export const Machines: React.FC = () => {
-  const [machines, setMachines] = React.useState<SupplierTypes.Machine[]>([]);
-  const tableMachines = React.useMemo<TableMachine[]>(
-    () => machines ? machinesToTable(machines) : [], [machines]);
-  const actionsMemo = React.useMemo(() => 
-    <ExportButton onExport={() => downloadCSV(tableMachines)} />, [tableMachines]);
-
-
-  React.useEffect(() => {
-    async function fetchMachines() {
-      const fetchResults = await axios.get('/wa/machines');
-      setMachines(fetchResults.data);
-    }
-    if (machines.length === 0) {
-      fetchMachines();
-    }
-  }, [])
-
-  return machines.length === 0 ? (
-    <ClimbingBoxLoader css={SPINNER_STYLE} color="#20b2aa"/>
-  ):(
-    <div>
-      <h2>Machines</h2>
-      <DataTable
-        columns={columns}
-        data={machines}
-        actions={actionsMemo}
-        expandableRows={true}
-        expandableRowsComponent={MachineDetails}
-        pagination
-      />
-    </div>
-  )
+  const machines = useSelector<any, any>(({ machines }) => machines.machines);
+  return (<ErrorBoundary>
+    {machines.length === 0 ? (
+      <ClimbingBoxLoader css={SPINNER_STYLE} color="#20b2aa" />
+    ) : (
+      <div>
+        <h2>Machines</h2>
+        <DataTable
+          columns={columns}
+          data={machines}
+          actions={(<ExportButton onExport={() => downloadCSV(machines)} />)}
+          expandableRows={true}
+          expandableRowsComponent={MachineDetails}
+          pagination
+        />
+      </div>
+    )}
+  </ErrorBoundary>);
 }
 
-function machinesToTable(machines: SupplierTypes.Machine[]): TableMachine[] {
-  return machines.map(({floor, machineNumber, sales, items}): TableMachine => ({
-    floor,
-    machineNumber,
-    sales, 
-    stockLevel: getStockLevel(items)
-  }));
-}
+class ErrorBoundary extends React.Component<{}, { hasError: boolean }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-function getStockLevel(items: SupplierTypes.Machine['items']): string {
-  return ((_.sumBy(items, ({quantity}) => quantity) /_.sumBy(items, ({capacity}) => capacity))*100  || 0).toFixed(2);
+  static getDerivedStateFromError(error: any) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: any, errorInfo: any) {
+    // You can also log the error to an error reporting service
+    console.log(error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
 }

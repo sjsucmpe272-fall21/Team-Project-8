@@ -63,7 +63,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES ('102f61f8-4b51-11ec-902a-b05adad3c217','sprite',2.00),('1030b8e3-4b51-11ec-902a-b05adad3c217','coke',2.50),('10322a92-4b51-11ec-902a-b05adad3c217','hot cheetos',1.50),('1033e3b6-4b51-11ec-902a-b05adad3c217','pringles',1.50),('1034dd74-4b51-11ec-902a-b05adad3c217','doritos',2.00),('1036a9da-4b51-11ec-902a-b05adad3c217','noodles',5.00),('1037b911-4b51-11ec-902a-b05adad3c217','snickers',3.50),('103955b3-4b51-11ec-902a-b05adad3c217','kit kat',1.50),('103a7fbf-4b51-11ec-902a-b05adad3c217','baby ruth',1.00),('103bfff9-4b51-11ec-902a-b05adad3c217','butter finger',1.50);
+INSERT INTO `items` VALUES ('102f61f8-4b51-11ec-902a-b05adad3c217','sprite',2.00),('1030b8e3-4b51-11ec-902a-b05adad3c217','coke',2.50),('10322a92-4b51-11ec-902a-b05adad3c217','coffee',3.00),('1033e3b6-4b51-11ec-902a-b05adad3c217','pringles',1.50),('1034dd74-4b51-11ec-902a-b05adad3c217','doritos',2.00),('1036a9da-4b51-11ec-902a-b05adad3c217','noodles',5.00),('1037b911-4b51-11ec-902a-b05adad3c217','snickers',3.50),('103955b3-4b51-11ec-902a-b05adad3c217','kit kat',1.50),('103a7fbf-4b51-11ec-902a-b05adad3c217','hot cheetos',2.00),('103bfff9-4b51-11ec-902a-b05adad3c217','bread',1.50);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +172,7 @@ DROP TABLE IF EXISTS `payments`;
 CREATE TABLE `payments` (
   `payment_id` varchar(255) NOT NULL,
   `price` decimal(4,2) DEFAULT NULL,
-  `credit_card_number` bigint DEFAULT NULL,
+  `credit_card_number` varchar(255) DEFAULT NULL,
   `p_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `machine_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`payment_id`),

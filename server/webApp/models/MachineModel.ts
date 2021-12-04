@@ -70,6 +70,53 @@ class MachineModel {
 
     return machines.map(({MACHINE_ID}: any) => MACHINE_ID);
   }
+
+  async restockMachine(machineId: string): Promise<SupplierTypes.Machine | undefined> {
+    const conn = await connection;
+
+    const sqlQuery = `
+      UPDATE machine_items SET QUANTITY=CAPACITY where M_ID='${machineId}'
+    `;
+
+    await conn.query(sqlQuery);
+
+    return this.getMachineForSupplier(machineId);
+  }
+
+  async getMachineForSupplier(machineId: string): Promise<SupplierTypes.Machine| undefined> {
+    const conn = await connection;
+
+    const machine = (await conn.query(`
+      SELECT *
+      FROM vending_machines 
+      WHERE MACHINE_ID="${machineId}"
+    `))[0];
+
+    const items = await conn.query(`
+      SELECT * 
+      FROM machine_items mi
+      INNER JOIN items i
+      ON mi.PRODUCT_ID = i.ITEM_ID
+      WHERE M_ID="${machineId}"
+    `);
+
+    const sales = await paymentModel.getSalesForMachine(machineId);
+
+    return {
+      machineId: machine.MACHINE_ID,
+      floor: machine.FLOOR,
+      machineNumber: machine.MACHINE_NUMBER,
+      ownerId: machine.OWNER_ID,
+      items: items.map(({ ITEM_ID, ITEM_NAME, price, QUANTITY, CAPACITY }: any) => ({
+        itemId: ITEM_ID,
+        name: ITEM_NAME,
+        price,
+        quantity: QUANTITY,
+        capacity: CAPACITY
+      })) || [],
+      sales
+      };
+  }
 }
 
 const aggregateVMItems = (

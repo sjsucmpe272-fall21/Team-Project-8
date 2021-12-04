@@ -49,7 +49,7 @@ class VendingMain extends React.Component<Props> {
             <div className="basket border">
               <h2 className="text-center">Basket</h2>
               <Items items={basket} />
-              <p className="text-center">Total: <b>€{totalAmount}</b></p>
+              <p className="text-center">Total: <b>${totalAmount}</b></p>
               <Button color="success" onClick={pay} disabled={basket.length === 0}>Pay</Button>
             </div>
             <div className="border machine-display">
@@ -81,22 +81,40 @@ const ConfirmPaymentModal: React.FC<ModalProps> = ({ isOpen, totalAmount, machin
   const [name, setName] = React.useState('');
   const [cardNumber, setCardNumber] = React.useState('');
 
-
   return (<Modal isOpen={isOpen} toggle={cancelPayment}>
     <ModalHeader toggle={cancelPayment}>Payment provider</ModalHeader>
     <ModalBody className="payment-modal-body">
-      Please confirm your payment of <b>€{totalAmount}</b>.
+      Please confirm your payment of <b>${totalAmount}</b>.
       <InputGroup>
-        <Input placeholder="Name" type='text' name='name' onChange={(e) => setName(e.target.value)} id='payment-name' />
+        <Input 
+          placeholder="Name" 
+          type='text' 
+          name='name' 
+          onChange={(e) => setName(e.target.value)} 
+          id='payment-name' 
+          value={name}
+        />
       </InputGroup>
       <InputGroup>
-        <Input placeholder="Credit card number" type='text' name='cardNumber' onChange={(e) => setCardNumber(e.target.value)} id='card-number'/>
+        <Input 
+          placeholder="Credit card number" 
+          type='text' 
+          name='cardNumber' 
+          onChange={(e) => setCardNumber(e.target.value)} 
+          id='card-number'
+          value={cardNumber}
+          />
       </InputGroup>
     </ModalBody>
     <ModalFooter>
       <Button 
         color="success" 
-        onClick={() => confirmPayment({machineId, basket, name, cardNumber})} 
+        onClick={async () => {
+
+          await confirmPayment({machineId, basket, name, cardNumber});
+          setName('')
+          setCardNumber('');
+        }} 
         disabled={name.length === 0 || cardNumber.length === 0}
       >Confirm</Button>
       {' '}

@@ -6,6 +6,23 @@ import { SupplierTypes } from '../../../shared/SupplierTypes';
 import { constrcutINClause, jsDateToMySQLDate } from './utlis';
 
 class PaymentModel {
+
+  async getSalesForMachine(machineId: string): Promise<number> {
+    const conn = await connection;
+    const today = new Date();
+    const sales = await conn.query(`
+    SELECT sum(price) as sales
+    FROM payments
+    WHERE machine_id="${machineId}"
+    AND (p_time BETWEEN '${jsDateToMySQLDate(
+      new Date(new Date().setDate(today.getDate()-30))
+    )}' AND '${jsDateToMySQLDate(today)}')
+  `);
+
+    return sales[0]?.sales || 0;
+  }
+
+
   async getPaymentsForMachines(machineIds: string[]): Promise<SupplierTypes.Payment[]> {
     const conn = await connection;
     const today = new Date();

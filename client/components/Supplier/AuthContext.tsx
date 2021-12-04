@@ -38,19 +38,21 @@ function useAuth(): AuthContext {
             password: password 
           }
         );
-        if (authenticateResult)
-        setAuthed(true);
-        return true;
+        if (authenticateResult) {
+          setAuthed(true);
+          return true;
+        }
+        return false;
       } catch (err) {
         setAuthed(false);
         return false;
       }
     },
     logout: async () => {
+      setAuthed(false); 
       await axios.get(
         '/wa/logout'
       )
-      setAuthed(false); 
     }
   };
 }
