@@ -15,7 +15,7 @@ export const Dashboard: React.FC = () => {
   
   return sales ? (
     <>
-      <h2>Welcome to Vendiman!</h2>
+      <h2>Last 30 days </h2>
       <div className="dashboard-charts">
         <div className="chart-row">
           <TotalSalesChart daily={sales.daily}/>

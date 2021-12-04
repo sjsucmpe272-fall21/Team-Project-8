@@ -13,12 +13,8 @@ import { store } from './store';
 
 type NavItem = 'dashboard' | 'machines' | 'stocks' | 'predictions';
 
-interface Props {
-}  
- 
 
-
-export const NavBar: React.FC<Props> = ({}) => {
+export const NavBar: React.FC = () => {
 
   const { logout } = AuthConsumer();
   const { page } = useParams<{page:NavItem}>();
@@ -29,6 +25,7 @@ export const NavBar: React.FC<Props> = ({}) => {
       <div className='main-component'>
         <div className='navigation-sidebar'>
           <div className='navigation-links'>
+            <h4>Vendiman</h4>
             <Link className='navigation-item' to='/supplier/dashboard'>Dashboard</Link>
             <Link className='navigation-item' to='/supplier/machines'>Machines</Link>
           </div>

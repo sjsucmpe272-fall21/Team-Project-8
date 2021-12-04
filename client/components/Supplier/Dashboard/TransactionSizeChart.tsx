@@ -35,7 +35,7 @@ export const TransactionSizeChart: React.FC<Props> = ({ transactions }) => {
           <XAxis dataKey="size" />
           <YAxis />
           <Tooltip />
-          <Legend formatter={() => "transactions"}/>
+          <Legend formatter={() => "Number of Items"}/>
           <Bar dataKey="count" fill="#8884d8" />
         </BarChart>
       </ResponsiveContainer>

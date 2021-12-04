@@ -147,7 +147,7 @@ for i in range(30):
 
 
 	if weekday > 4:
-		time_runs = random.randint(0, 2)
+		time_runs = random.randint(1, 3)
 	else: 
 		time_runs = random.randint(15, 25)
 
