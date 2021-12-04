@@ -11,7 +11,7 @@ export const App: React.FC = () => {
   const { authed } = AuthConsumer();
   return (
     <div>
-      Some helpful links here. Should be removed/modified later
+      {/* Some helpful links here. Should be removed/modified later
       <ul>
         <li>
           <Link to='/'>Home</Link>
@@ -32,7 +32,7 @@ export const App: React.FC = () => {
             </li>
           </>
         )}
-      </ul>
+      </ul> */}
       <AuthProvider>
         <Route exact path='/'>
           <div>

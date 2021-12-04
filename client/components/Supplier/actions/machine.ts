@@ -5,8 +5,8 @@ import { store } from '../store';
 const { dispatch } = store
 
 export async function initialLoad() {
-  const machine = await axios.get('/wa/machines');
-  dispatch({type: 'LOAD_USER_MACHINES', payload: machine.data})
+  const machine = await axios.get('/wa/initialLoad');
+  dispatch({type: 'INITIAL_LOAD', payload: machine.data})
 }
 
 export async function restockAllItems(machineId: string) {

@@ -1,12 +1,10 @@
 .main-component {
   display: flex;
   height: 100%;
-  width: 100%;
 }
 
 .navigation-sidebar {
-  width: 100px;
-  max-height: 1000px;
+  min-width: 120px;
   padding: 100px 0;
   border-right: 2px solid gray; 
   display: flex;

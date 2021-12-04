@@ -83,11 +83,16 @@ const protectedRouteMiddleware: express.Handler = (req, res, next) => {
 
 type AuthenticatedRequest = express.Request & { user: SupplierTypes.User };
 
-WebAppRouter.route('/machines')
+WebAppRouter.route('/initialLoad')
   .get(protectedRouteMiddleware, async (req: any, res) => {
     const machines = await machineModel.getMachinesForUser(req.user.id);
+    const sales = await paymentModel.getSalesForMachines(machines.map(({machineId}) => machineId));
 
-    res.send(machines);
+
+    res.send({
+      machines,
+      sales
+    });
   })
 
 WebAppRouter.route('/machine/restock')

@@ -31,7 +31,6 @@ export const NavBar: React.FC<Props> = ({}) => {
           <div className='navigation-links'>
             <Link className='navigation-item' to='/supplier/dashboard'>Dashboard</Link>
             <Link className='navigation-item' to='/supplier/machines'>Machines</Link>
-            <Link className='navigation-item' to='/supplier/predictions'>Predictions</Link>
           </div>
           <button onClick={logout}>Log out</button>
         </div>

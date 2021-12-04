@@ -3,7 +3,6 @@ import { Button } from 'reactstrap';
 import { 
   BarChart, 
   Bar, 
-  Cell,
   XAxis, 
   YAxis, 
   CartesianGrid, 

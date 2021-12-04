@@ -42,6 +42,26 @@ export namespace SupplierTypes {
     timestamp: Date;
     machineId: string;
   }
+
+  export interface Sales {
+    daily: {
+      machines: {
+        machineId: string;
+        sales: number;
+      }[];
+      date: string;
+    }[];
+    items: {
+      sales: number;
+      name: string;
+      itemId: string;
+      transactions: number;
+    }[];
+    transactionSize: {
+      size: number;
+      count: number;
+    }[]
+  }
 }
 
 export const DEFAULT_SALT_ROUNDS = 10;

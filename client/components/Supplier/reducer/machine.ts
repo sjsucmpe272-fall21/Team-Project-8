@@ -6,8 +6,11 @@ import { SupplierState } from '../store';
 
 
 type SupplierAction = {
-  type: 'LOAD_USER_MACHINES';
-  payload: SupplierTypes.Machine[]
+  type: 'INITIAL_LOAD';
+  payload: {
+    machines: SupplierTypes.Machine[];
+    sales: SupplierTypes.Sales;
+  };
 } | {
   type: 'DEFAULT_ACTION';
 } | {
@@ -17,9 +20,14 @@ type SupplierAction = {
 
 const DEFAULT_STATE: SupplierState = {
   machines: [],
+  sales: {
+    daily:[],
+    items:[],
+    transactionSize: []
+  }
 }
 
-export function machineReducer(state: SupplierState | undefined, action:SupplierAction) {
+export function machineReducer(state: SupplierState | undefined, action:SupplierAction): SupplierState {
   let newState;
 
   if (!state) {
@@ -27,10 +35,9 @@ export function machineReducer(state: SupplierState | undefined, action:Supplier
   }
 
   switch (action.type) {
-    case 'LOAD_USER_MACHINES':
+    case 'INITIAL_LOAD':
       newState = {
-        ...state,
-        machines: cloneDeep(action.payload)
+        ...cloneDeep(action.payload)
       };
       break;
     case 'RESTOCK_MACHINE':

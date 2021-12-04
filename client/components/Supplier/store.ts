@@ -14,6 +14,7 @@ export const store = configureStore({
 
 export interface SupplierState {
   machines: SupplierTypes.Machine[];
+  sales: SupplierTypes.Sales;
 }
 
 

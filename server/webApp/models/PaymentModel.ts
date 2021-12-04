@@ -22,6 +22,64 @@ class PaymentModel {
     return sales[0]?.sales || 0;
   }
 
+  async getSalesForMachines(machineIds: string[]): Promise<SupplierTypes.Sales> {
+    const conn = await connection;
+    const today = new Date();
+    
+    const payments = await conn.query(`
+      SELECT payment_id, price, credit_card_number, p_time, machine_id
+      FROM payments 
+      WHERE machine_id IN ${constrcutINClause(machineIds)}
+      AND (p_time BETWEEN '${jsDateToMySQLDate(
+        new Date(new Date().setDate(today.getDate()-30))
+      )}' AND '${jsDateToMySQLDate(today)}')
+    `);
+
+    const daily = _.groupBy(payments, (({p_time}) => p_time.toLocaleDateString()));
+
+    const dailyResults = Object.keys(daily).map((key)=> {
+      const dailyPayments = daily[key];
+      const machinesById = _.groupBy(dailyPayments, ({machine_id}) => machine_id);
+
+      return {
+        date: key,
+        machines: Object.entries(machinesById).map(([machineId, machineSales]) => ({
+          machineId,
+          sales: machineSales.reduce((prev, curr) => prev + curr.price,0)
+        }))
+      };
+    });
+
+    const allPaymentIds = payments.map(({payment_id}: any) => payment_id);
+
+    const allItems = await conn.query(`
+      SELECT product_id as itemId, sum(unit_price * quantity) as sales, ITEM_NAME as name, count(*) as transactions 
+      FROM payment_product 
+      INNER JOIN items ON product_id=ITEM_ID 
+      WHERE payment_id IN ${constrcutINClause(allPaymentIds)}
+      GROUP BY product_id
+    `)
+
+    const transactions = await conn.query(`
+      SELECT count(*) as count 
+      FROM payments pm 
+      INNER JOIN payment_product pd 
+        ON pm.payment_id=pd.payment_id 
+      GROUP BY pm.payment_id;
+    `)
+    const transactionCount = _.groupBy(transactions, ({count})=> count);
+
+
+    return {
+      daily: dailyResults,
+      items: allItems,
+      transactionSize: Object.entries(transactionCount).map(([key, value]) => ({
+        size: Number(key),
+        count: value.length
+      }))
+    }
+  }
+
 
   async getPaymentsForMachines(machineIds: string[]): Promise<SupplierTypes.Payment[]> {
     const conn = await connection;

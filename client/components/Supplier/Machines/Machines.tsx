@@ -41,7 +41,7 @@ const columns: TableColumn<SupplierTypes.Machine>[] = [
 export const Machines: React.FC = () => {
   const machines = useSelector<any, any>(({ machines }) => machines.machines);
   return (<ErrorBoundary>
-    {machines.length === 0 ? (
+    {!machines || machines.length === 0 ? (
       <ClimbingBoxLoader css={SPINNER_STYLE} color="#20b2aa" />
     ) : (
       <div>
