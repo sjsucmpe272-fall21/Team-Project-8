@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from './components/app';
 // import constants from './config/config.json';
 
-axios.defaults.baseURL = "http://localhost:3000/api";
+axios.defaults.baseURL = "http://ec2-54-176-106-32.us-west-1.compute.amazonaws.com/api";
 axios.defaults.withCredentials = true;
 
 ReactDOM.hydrate((

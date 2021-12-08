@@ -19,8 +19,8 @@ export async function initialLoad(machineId: string) {
   if (!axios.defaults.baseURL) {
     return;
   }
-  // const machine = await axios.get<VendingTypes.Machine>(`/vm/machineItems?machineId=${machineId}`);
-  // dispatch({type: 'INITIAL_LOAD', payload: machine.data}) 
+  const machine = await axios.get<VendingTypes.Machine>(`/vm/machineItems?machineId=${machineId}`);
+  dispatch({type: 'INITIAL_LOAD', payload: machine.data}) 
 }
 
 export async function nearbyCheck(item: VendingTypes.Item, flr: number) {
