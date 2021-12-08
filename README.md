@@ -1,6 +1,6 @@
 # Team-Project-8
 
-##Save the Vending Machine 
+## Save the Vending Machine 
 **1.	Problems and Goals:**<br />
 There are more than 7 million vending machines serving people in the U.S. every day, and these add up to a market more than 8 billion dollars. However, seeing the desired item being out-of-stock is one of the most disappointing moment. In fact, vending machines being out-of-stock are estimated to be at least 3% in lost sales. Therefore, having an interactive web app that helps tracking the stock information becomes crucial to improve the business.
 
@@ -41,11 +41,23 @@ We'll also build an internal service for vending machines to talk to each other,
   - You can verify with `nvm ls` and make sure it's pointing to `v16.x.x`
 
 ## Other requirements
-Once nvm and node has been installed and you have checked out the latest version of this repo, you can simply run 
+- Once nvm and node has been installed and you have checked out the latest version of this repo, you can simply run the following command to install all other requirements. 
+
 ```
 npm install
 ```
-to install all other requirements. 
+- To construct database and tables
+```
+cd backend/database
+mysql -u root -p < vendimandb.sql
+```
+- To automatically populate sales data in database
+```
+cd backend/database
+pip install -r requirements
+python3 salesScript.py
+```
+
 
 # Development
 ## Setup
