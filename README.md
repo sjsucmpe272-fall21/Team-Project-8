@@ -10,7 +10,7 @@ We will be building a web application that allows suppliers to better monitor th
 We'll also build an internal service for vending machines to talk to each other, so vending machines can better guide customers to nearby machines when it runs out of stock and the other machine still have that product in stock. 
 
 **3.	Approach:** <br />
-- Node.js server and PostgreSQL DB to store stock & user information.
+- Node.js server and MySQL DB to store stock & user information.
 - React front end with different view for consumers and suppliers.
 - Deploy the app on AWS
 
@@ -24,9 +24,10 @@ We'll also build an internal service for vending machines to talk to each other,
 
 
 - **Smart Machine:**
+  - Shows all products present in that machine to the customer and customer can cllect his product after successful payment.   
   - Be able to display nearby stock info directly on the machines if a requested product runs out but is available at other machines. 
-  - Record climate infomation (temperature, precipitation) via on machine sensor and data from NOAA to observe relations and advice on stocking. 
-  - Display customized ads when user make purchases
+  
+
 
 
 # Installations
@@ -72,18 +73,6 @@ Debugger listening on ws://127.0.0.1:9229/52509200-d710-486f-b6d5-b679ace76830
 For help, see: https://nodejs.org/en/docs/inspector
 Server running on http://localhost:3000
 ```
-
-
-## Work Distribution
-- Wen-hao
-  - You can start from `client/components/Supplier` in the code. I've included a brief skeleton for components and styles
-  - The corresponding landing page would be `localhost:3000/supplier`
-- Saikrishna
-  - You can start from `client/components/VendingMachine` in the code. I've included a brief skeleton for components and styles
-  - The corresponding landing page would be `localhost:3000/vending`
-- Teja
-  - You can start from `server/vendingMachine`. There's a router that you can add more endpoints/methods to handle different requests
-  - You can send **GET** request directly from browser to `localhost/api/vm` or subsequent entpoints, or use `curl -X POST -d some_data` from command line
 
 ## Knowledge Sharing
 There's also a `shared` folder that is meant for the API between front/backend. It'll be
