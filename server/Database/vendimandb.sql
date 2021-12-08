@@ -252,15 +252,15 @@ productId varchar(255),
 flr int)
 BEGIN
 select MACHINE_NUMBER,floor from vending_machines
-    where MACHINE_ID in (select mi.M_ID from MACHINE_ITEMS mi,vending_machines v where v.MACHINE_ID =mi.M_ID and
+    where MACHINE_ID in (select mi.M_ID from machine_items mi,vending_machines v where v.MACHINE_ID =mi.M_ID and
      v.floor =flr and mi.product_id=productId and quantity>0)
     UNION
     (select MACHINE_NUMBER,floor from vending_machines
-    where  MACHINE_ID in(select mi.M_ID from MACHINE_ITEMS mi,vending_machines v where v.MACHINE_ID =mi.M_ID and
+    where  MACHINE_ID in(select mi.M_ID from machine_items mi,vending_machines v where v.MACHINE_ID =mi.M_ID and
      v.floor >flr  and mi.product_id=productID and quantity>0))
     UNION
     (select MACHINE_NUMBER,floor from vending_machines
-    where  MACHINE_ID in(select mi.M_ID from MACHINE_ITEMS mi,vending_machines v where v.MACHINE_ID =mi.M_ID and
+    where  MACHINE_ID in(select mi.M_ID from machine_items mi,vending_machines v where v.MACHINE_ID =mi.M_ID and
      v.floor <flr  and mi.product_id=productId and quantity>0))
     order by floor,MACHINE_NUMBER asc
     limit 3;
@@ -312,7 +312,7 @@ BEGIN
 insert into payment_product (payment_id, product_id, unit_price, quantity)
 values (paymentId,productId, unit_price, count);
 
-UPDATE MACHINE_ITEMS SET Quantity = quantity-count where m_id=machineId and PRODUCT_ID=productId;
+UPDATE machine_items SET Quantity = quantity-count where m_id=machineId and PRODUCT_ID=productId;
 
 
 
