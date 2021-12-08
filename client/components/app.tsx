@@ -1,11 +1,11 @@
 import React from 'react'
 import { Route, Link, Redirect } from 'react-router-dom'
 
-import { Supplier } from './Supplier/Supplier'
-import { VendingMachine  } from './VendingMachine/VendingMachine'
-import { AuthConsumer, AuthProvider } from './Supplier/AuthContext'
-import { NavBar } from './Supplier/NavBar'
-import { VendingMachineList } from './VendingMachine/VendingMachineList'
+import { Supplier } from './Supplier/Supplier';
+import { VendingMachine  } from './VendingMachine/VendingMachine';
+import { AuthConsumer, AuthProvider } from './Supplier/AuthContext';
+import { NavBar } from './Supplier/NavBar';
+import { VendingMachineList } from './VendingMachine/VendingMachineList';
 
 export const App: React.FC = () => {
   const { authed } = AuthConsumer();
@@ -44,7 +44,7 @@ export const App: React.FC = () => {
         <Route path='/allmachines'>
           <VendingMachineList/>
         </Route>
-        <Route path='/vending/:machineId'>
+        <Route path='/vending/:machineId?'>
           <VendingMachine />
         </Route>
         <Route exact={true} path='/supplier'>

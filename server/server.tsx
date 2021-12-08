@@ -55,8 +55,7 @@ const assets = JSON.parse(manifest)
 // Routes for API
 
 server.get('*', (req, res) => {
-
-
+  console.log("Main get?", req.originalUrl)
   const component = ReactDOMServer.renderToString(
     (<StaticRouter location={req.url}>
       <App />

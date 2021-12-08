@@ -247,7 +247,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `nearestMachinecheck`(
+CREATE DEFINER=`root`@`172.31.4.95` PROCEDURE `nearestMachinecheck`(
 productId varchar(255),
 flr int)
 BEGIN
@@ -283,7 +283,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `createPayment`;
 
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createPayment`(
+CREATE DEFINER=`root`@`172.31.4.95` PROCEDURE `createPayment`(
 paymentId varchar(255),
 machineId varchar(255),
 cost decimal(4,2),
@@ -300,7 +300,7 @@ DELIMITER ;
 
 
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `purchaseItems`(
+CREATE DEFINER=`root`@`172.31.4.95` PROCEDURE `purchaseItems`(
 paymentId varchar(255),
 productId varchar(255),
 machineId varchar(255),
@@ -333,7 +333,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `quantityCheck`(
+CREATE DEFINER=`root`@`172.31.4.95` PROCEDURE `quantityCheck`(
 machine_id varchar(255),
 p_id varchar(255),
 count int)

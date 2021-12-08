@@ -4,7 +4,7 @@ import random
 import uuid
 import numpy as np
 
-host = 'localhost'
+host = 'cmpe272-vendiman.c9sjsupjopfv.us-west-1.rds.amazonaws.com'
 user = 'root'
 password = 'password'
 port = 3306

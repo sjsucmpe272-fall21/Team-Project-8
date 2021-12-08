@@ -14,14 +14,19 @@ export function removeItem(itemId: string) {
 }
 
 export async function initialLoad(machineId: string) {
-  const machine = await axios.get<VendingTypes.Machine>(`/vm/machineItems?machineId=${machineId}`);
-  dispatch({type: 'INITIAL_LOAD', payload: machine.data})
+  console.log("Initial Load", machineId)
+  console.log(axios.defaults)
+  if (!axios.defaults.baseURL) {
+    return;
+  }
+  // const machine = await axios.get<VendingTypes.Machine>(`/vm/machineItems?machineId=${machineId}`);
+  // dispatch({type: 'INITIAL_LOAD', payload: machine.data}) 
 }
 
 export async function nearbyCheck(item: VendingTypes.Item, flr: number) {
   const nearbyMachines = 
     await axios.get<VendingTypes.NearbyMachine[]>(
-      `/vm/nearestMachineCheck?productId=${item.id}&flr=${flr}`); 
+      `/vm/nearestMachineCheck?productId=${item.id}&flr=${flr}`);  
 
   dispatch({type: 'NEARBY_CHECK', payload: {
     nearbyMachines: nearbyMachines.data,
