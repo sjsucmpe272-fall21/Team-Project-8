@@ -10,7 +10,7 @@ We will be building a web application that allows suppliers to better monitor th
 We'll also build an internal service for vending machines to talk to each other, so vending machines can better guide customers to nearby machines when it runs out of stock and the other machine still have that product in stock. 
 
 **3.	Approach:** <br />
-- Node.js server and PostgreSQL DB to store stock & user information.
+- Node.js server and MySQL DB to store stock & user information.
 - React front end with different view for consumers and suppliers.
 - Deploy the app on AWS
 
