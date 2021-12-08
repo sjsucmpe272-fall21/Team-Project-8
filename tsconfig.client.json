@@ -1,5 +1,5 @@
 {
-  "include": ["client"],
+  "include": ["frontend"],
   "exclude": ["node_modules", "build"],
   "compilerOptions": {
     "module": "es6", // generate ES modules

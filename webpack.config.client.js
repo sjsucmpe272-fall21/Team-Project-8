@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   name: 'client',
-  entry: './client/client.tsx',
+  entry: './frontend/client.tsx',
   devtool: 'inline-source-map',
   // mode: 'production',
   externalsPresets: { node: true }, // in order to ignore built-in modules like path, fs, etc.

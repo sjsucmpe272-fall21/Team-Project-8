@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   name: 'server',
   entry: {
-    server: path.resolve(__dirname, 'server/server.tsx'),
+    server: path.resolve(__dirname, 'backend/server.tsx'),
   },
   mode: 'production',
   output: {
@@ -43,7 +43,7 @@ module.exports = {
   },
   plugins: [
     new CopyPlugin({
-      patterns: [{ context: 'server', from: 'views', to: 'views' }],
+      patterns: [{ context: 'backend', from: 'views', to: 'views' }],
     }),
     new MiniCssExtractPlugin()
   ],

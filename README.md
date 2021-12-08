@@ -48,11 +48,13 @@ to install all other requirements.
 
 # Development
 ## Setup
-The following command will compile both client and server side code and spin up a server that serve the frontend code at `localhost:3000`
+- Change the database config in `backend/database/config.json` to point to `localhost` for local development
+- Change the `axios.defaults.baseURL` to `localhost:3000/api` in `frontend/client.tsx`  
+- The following command will compile both client and server side code and spin up a server that serve the frontend code at `localhost:3000`
 ```
 npm run dev
 ```
-You should see some compiling messages in our console similar to below if everything compiles successfully:
+- You should see some compiling messages in our console similar to below if everything compiles successfully:
 ```
 Compiling client ...
 Compiling server ...
@@ -70,6 +72,7 @@ Debugger listening on ws://127.0.0.1:9229/52509200-d710-486f-b6d5-b679ace76830
 For help, see: https://nodejs.org/en/docs/inspector
 Server running on http://localhost:3000
 ```
+
 
 ## Work Distribution
 - Wen-hao
